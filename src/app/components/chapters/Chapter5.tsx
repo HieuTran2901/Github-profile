@@ -1,5 +1,6 @@
 import { useState, useContext, memo, useCallback, useEffect } from "react";
-import { motion, AnimatePresence, useTransform, useMotionValueEvent } from "motion/react";
+import { motion, AnimatePresence, useTransform, useMotionValueEvent, useSpring } from "motion/react";
+import type { MotionValue } from "motion/react";
 import { MotionCtx } from "../../App";
 import studyplan from "../../../assets/studyplan.png";
 import studyplan1 from "../../../assets/studyplan1.png";
@@ -102,28 +103,198 @@ function clamp(min: number, max: number, val: number) {
   return Math.max(min, Math.min(max, val));
 }
 
+// Sub-component for individual project cards with continuous MotionValue transforms
+const OrbitProjectCard = memo(function OrbitProjectCard({
+  proj,
+  index,
+  projectProgress,
+  activeProject,
+  onSelect,
+}: {
+  proj: StoryProject;
+  index: number;
+  projectProgress: MotionValue<number>;
+  activeProject: number;
+  onSelect: (idx: number) => void;
+}) {
+  const x = useTransform(projectProgress, (p) => {
+    let rel = index - p;
+    while (rel < -1.5) rel += 3;
+    while (rel > 1.5) rel -= 3;
+    return Math.sin(rel * (Math.PI / 2.6)) * 460;
+  });
+
+  const z = useTransform(projectProgress, (p) => {
+    let rel = index - p;
+    while (rel < -1.5) rel += 3;
+    while (rel > 1.5) rel -= 3;
+    return 120 - Math.abs(rel) * 140;
+  });
+
+  const scale = useTransform(projectProgress, (p) => {
+    let rel = index - p;
+    while (rel < -1.5) rel += 3;
+    while (rel > 1.5) rel -= 3;
+    const absRel = Math.min(1.5, Math.abs(rel));
+    return 1.0 - absRel * 0.28;
+  });
+
+  const rotateY = useTransform(projectProgress, (p) => {
+    let rel = index - p;
+    while (rel < -1.5) rel += 3;
+    while (rel > 1.5) rel -= 3;
+    return -rel * 22;
+  });
+
+  const opacity = useTransform(projectProgress, (p) => {
+    let rel = index - p;
+    while (rel < -1.5) rel += 3;
+    while (rel > 1.5) rel -= 3;
+    const absRel = Math.min(1.5, Math.abs(rel));
+    return 1.0 - absRel * 0.38;
+  });
+
+  const isActive = index === activeProject;
+
+  return (
+    <motion.div
+      onClick={() => onSelect(index)}
+      style={{
+        x,
+        z,
+        scale,
+        rotateY,
+        opacity,
+        transformStyle: "preserve-3d",
+      }}
+      className={`absolute rounded-2xl overflow-hidden backdrop-blur-xl border cursor-pointer ${
+        isActive
+          ? "w-[92%] sm:w-[680px] md:w-[740px] h-[310px] sm:h-[340px] bg-slate-950/85 border-sky-400/50 shadow-[0_20px_60px_rgba(0,180,255,0.22)] z-20"
+          : "w-[75%] sm:w-[480px] h-[260px] sm:h-[290px] bg-slate-950/70 border-white/10 hover:border-white/30 z-10"
+      }`}
+    >
+      {isActive ? (
+        /* ================= ACTIVE CENTER CARD ================= */
+        <div className="flex flex-col sm:flex-row w-full h-full">
+          {/* Left/Main Hero Screenshot Stage */}
+          <div className="w-full sm:w-[58%] h-48 sm:h-full bg-slate-950/90 relative overflow-hidden flex items-center justify-center p-2 border-b sm:border-b-0 sm:border-r border-white/10">
+            <img
+              src={proj.heroImage}
+              alt={proj.title}
+              className="w-full h-full object-contain rounded-lg select-none"
+            />
+          </div>
+
+          {/* Right Summary Info Stage */}
+          <div className="w-full sm:w-[42%] p-5 sm:p-6 flex flex-col justify-between">
+            <div>
+              {/* Milestone Number + Active Badge */}
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-3xl font-extrabold font-mono text-sky-400 leading-none">
+                    {proj.numberStr}
+                  </span>
+                  <span className="text-xs font-mono text-white/40">
+                    {proj.year}
+                  </span>
+                </div>
+                <span className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[9px] font-mono font-bold tracking-wider">
+                  ACTIVE
+                </span>
+              </div>
+
+              {/* Title & Subtitle */}
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-1 leading-tight">
+                {proj.title}
+              </h3>
+              <p className="text-xs text-white/60 line-clamp-3 leading-relaxed mb-4">
+                {proj.description}
+              </p>
+            </div>
+
+            {/* Detail Thumbnails Switcher & Link */}
+            <div className="flex items-center justify-between pt-2 border-t border-white/10">
+              <div className="flex gap-1.5">
+                {proj.detailImages.map((imgSrc, dIdx) => (
+                  <div
+                    key={dIdx}
+                    className="w-9 h-6 rounded overflow-hidden border border-white/15 bg-black/40"
+                  >
+                    <img src={imgSrc} alt="" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+
+              <span className="text-xs font-mono text-sky-400 font-semibold hover:underline flex items-center gap-1">
+                View Details ➔
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* ================= SIDE PEEK CARD ================= */
+        <div className="flex flex-col w-full h-full p-4 justify-between">
+          <div>
+            <div className="flex items-baseline gap-2 mb-1.5">
+              <span className="text-2xl font-extrabold font-mono text-white/80">
+                {proj.numberStr}
+              </span>
+              <span className="text-[10px] font-mono text-white/40">
+                {proj.year}
+              </span>
+            </div>
+            <h4 className="text-sm font-bold text-white/90 truncate mb-1">
+              {proj.title}
+            </h4>
+            <p className="text-[11px] text-white/50 line-clamp-2">
+              {proj.description}
+            </p>
+          </div>
+
+          <div className="w-full h-32 rounded-lg overflow-hidden bg-slate-900/80 border border-white/10 mt-2 flex items-center justify-center">
+            <img
+              src={proj.heroImage}
+              alt=""
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+});
+
 export const Chapter5 = memo(function Chapter5({ visible }: Props) {
   const { mouse, motionProgress } = useContext(MotionCtx);
   const [triggered, setTriggered] = useState(false);
   const [activeProject, setActiveProject] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
   // Local scene progress extracted from global motionProgress (Chapter 5 = index 4)
   const cp = useTransform(motionProgress!, (v: number) => clamp(-0.5, 1.5, v - 4));
 
-  // Discrete state: triggered + activeProject
-  useMotionValueEvent(cp, "change", (latest) => {
-    if (latest > 0.08 && !triggered) {
+  // Continuous project progress mapping across the active dwell zone (4.15 -> 4.50 -> 4.85)
+  // Maps cp from [0.15, 0.50, 0.85] continuously to [0, 1, 2]
+  const rawProjectProgress = useTransform(cp, (v) => {
+    const clamped = clamp(0.15, 0.85, v);
+    return ((clamped - 0.15) / 0.70) * 2;
+  });
+
+  // Dedicated spring for ultra-smooth fluid orbit movement
+  const projectProgress = useSpring(rawProjectProgress, {
+    stiffness: 160,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  // Discrete state update for HUD billboard metadata (Fires only when crossing midpoints)
+  useMotionValueEvent(projectProgress, "change", (latest) => {
+    if (!triggered) {
       setTriggered(true);
     }
 
-    if (latest > 0.1) {
-      const inner = clamp(0, 0.99, (latest - 0.12) / 0.72);
-      const idx = Math.floor(inner * projects.length);
-      const newProject = clamp(0, projects.length - 1, idx);
-      if (newProject !== activeProject) {
-        setActiveProject(newProject);
-      }
+    const nearestProject = clamp(0, 2, Math.round(latest));
+    if (nearestProject !== activeProject) {
+      setActiveProject(nearestProject);
     }
   });
 
@@ -148,19 +319,19 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
 
   // Continuous scroll animations via MotionValue
   const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.15;
-    const exiting = v > 0.82;
-    return entering ? easeOut(v / 0.15) : exiting ? 1 - easeOut((v - 0.82) / 0.18) : 1;
+    const entering = v < 0.12;
+    const exiting = v > 0.86;
+    return entering ? easeOut(v / 0.12) : exiting ? 1 - easeOut((v - 0.86) / 0.14) : 1;
   });
 
   const translateY = useTransform(cp, (v) => {
-    const entering = v < 0.15;
-    return entering ? (1 - easeOut(v / 0.15)) * 40 : 0;
+    const entering = v < 0.12;
+    return entering ? (1 - easeOut(v / 0.12)) * 30 : 0;
   });
 
   // Spatial Parallax & Tilt MotionValues
-  const rotateX = useTransform(cp, () => mouse.y * -4);
-  const rotateY = useTransform(cp, () => mouse.x * 5);
+  const rotateX = useTransform(cp, () => mouse.y * -3.5);
+  const rotateY = useTransform(cp, () => mouse.x * 4.5);
 
   const currentProj = projects[activeProject];
 
@@ -176,8 +347,6 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* AMBIENT CELESTIAL BACKGROUND */}
       <div
@@ -245,10 +414,10 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
           <AnimatePresence mode="wait">
             <motion.h2
               key={currentProj.id}
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.25 }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-2"
               style={{
                 textShadow: "0 2px 20px rgba(56,189,248,0.25)",
@@ -265,7 +434,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, delay: 0.05 }}
+              transition={{ duration: 0.25, delay: 0.04 }}
               className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed mb-3 font-light"
             >
               {currentProj.description}
@@ -346,7 +515,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
         </div>
 
         {/* ========================================================================= */}
-        {/* 3. 3D ORBITAL PROJECT CARDS STAGE */}
+        {/* 3. 3D CONTINUOUS ORBITAL PROJECT CARDS STAGE */}
         {/* ========================================================================= */}
         <div className="relative w-full max-w-5xl h-[330px] sm:h-[360px] flex items-center justify-center z-10" style={{ transformStyle: "preserve-3d" }}>
           {/* Navigation Arrow Controls */}
@@ -366,158 +535,17 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
             &#8250;
           </button>
 
-          {/* Render All 3 Projects on the Orbital Ring */}
-          {projects.map((proj, idx) => {
-            // Calculate spatial offset relative to active project: -1 (Left), 0 (Active), 1 (Right)
-            const rawDiff = idx - activeProject;
-            let diff = rawDiff;
-            if (rawDiff === -2) diff = 1;
-            if (rawDiff === 2) diff = -1;
-
-            const isActive = diff === 0;
-            const isLeft = diff === -1;
-            const isRight = diff === 1;
-
-            // Compute 3D Card Positioning
-            let xPos = 0;
-            let zPos = 0;
-            let scaleVal = 1;
-            let rotY = 0;
-            let opacityVal = 1;
-
-            if (isActive) {
-              xPos = 0;
-              zPos = 120;
-              scaleVal = 1;
-              rotY = 0;
-              opacityVal = 1;
-            } else if (isLeft) {
-              xPos = -440;
-              zPos = -10;
-              scaleVal = 0.72;
-              rotY = 20;
-              opacityVal = 0.65;
-            } else if (isRight) {
-              xPos = 440;
-              zPos = -10;
-              scaleVal = 0.72;
-              rotY = -20;
-              opacityVal = 0.65;
-            }
-
-            return (
-              <motion.div
-                key={proj.id}
-                animate={{
-                  x: xPos,
-                  z: zPos,
-                  scale: scaleVal,
-                  rotateY: rotY,
-                  opacity: opacityVal,
-                }}
-                transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                onClick={() => {
-                  if (!isActive) setActiveProject(idx);
-                }}
-                className={`absolute rounded-2xl overflow-hidden backdrop-blur-xl border transition-shadow cursor-pointer ${
-                  isActive
-                    ? "w-[92%] sm:w-[680px] md:w-[740px] h-[310px] sm:h-[340px] bg-slate-950/85 border-sky-400/50 shadow-[0_20px_60px_rgba(0,180,255,0.22)] z-20"
-                    : "w-[75%] sm:w-[480px] h-[260px] sm:h-[290px] bg-slate-950/70 border-white/10 hover:border-white/30 z-10"
-                }`}
-                style={{
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                {isActive ? (
-                  /* ================= ACTIVE CENTER CARD ================= */
-                  <div className="flex flex-col sm:flex-row w-full h-full">
-                    {/* Left/Main Hero Screenshot Stage */}
-                    <div className="w-full sm:w-[58%] h-48 sm:h-full bg-slate-950/90 relative overflow-hidden flex items-center justify-center p-2 border-b sm:border-b-0 sm:border-r border-white/10">
-                      <img
-                        src={proj.heroImage}
-                        alt={proj.title}
-                        className="w-full h-full object-contain rounded-lg select-none"
-                      />
-                    </div>
-
-                    {/* Right Summary Info Stage */}
-                    <div className="w-full sm:w-[42%] p-5 sm:p-6 flex flex-col justify-between">
-                      <div>
-                        {/* Milestone Number + Active Badge */}
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-baseline gap-1.5">
-                            <span className="text-3xl font-extrabold font-mono text-sky-400 leading-none">
-                              {proj.numberStr}
-                            </span>
-                            <span className="text-xs font-mono text-white/40">
-                              {proj.year}
-                            </span>
-                          </div>
-                          <span className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[9px] font-mono font-bold tracking-wider">
-                            ACTIVE
-                          </span>
-                        </div>
-
-                        {/* Title & Subtitle */}
-                        <h3 className="text-lg sm:text-xl font-bold text-white mb-1 leading-tight">
-                          {proj.title}
-                        </h3>
-                        <p className="text-xs text-white/60 line-clamp-3 leading-relaxed mb-4">
-                          {proj.description}
-                        </p>
-                      </div>
-
-                      {/* Detail Thumbnails Switcher & Link */}
-                      <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                        <div className="flex gap-1.5">
-                          {proj.detailImages.map((imgSrc, dIdx) => (
-                            <div
-                              key={dIdx}
-                              className="w-9 h-6 rounded overflow-hidden border border-white/15 bg-black/40"
-                            >
-                              <img src={imgSrc} alt="" className="w-full h-full object-cover" />
-                            </div>
-                          ))}
-                        </div>
-
-                        <span className="text-xs font-mono text-sky-400 font-semibold hover:underline flex items-center gap-1">
-                          View Details ➔
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  /* ================= SIDE PEEK CARD ================= */
-                  <div className="flex flex-col w-full h-full p-4 justify-between">
-                    <div>
-                      <div className="flex items-baseline gap-2 mb-1.5">
-                        <span className="text-2xl font-extrabold font-mono text-white/80">
-                          {proj.numberStr}
-                        </span>
-                        <span className="text-[10px] font-mono text-white/40">
-                          {proj.year}
-                        </span>
-                      </div>
-                      <h4 className="text-sm font-bold text-white/90 truncate mb-1">
-                        {proj.title}
-                      </h4>
-                      <p className="text-[11px] text-white/50 line-clamp-2">
-                        {proj.description}
-                      </p>
-                    </div>
-
-                    <div className="w-full h-32 rounded-lg overflow-hidden bg-slate-900/80 border border-white/10 mt-2 flex items-center justify-center">
-                      <img
-                        src={proj.heroImage}
-                        alt=""
-                        className="w-full h-full object-cover opacity-80"
-                      />
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            );
-          })}
+          {/* Render All 3 Projects on the Orbital Ring with continuous MotionValue positioning */}
+          {projects.map((proj, idx) => (
+            <OrbitProjectCard
+              key={proj.id}
+              proj={proj}
+              index={idx}
+              projectProgress={projectProgress}
+              activeProject={activeProject}
+              onSelect={setActiveProject}
+            />
+          ))}
         </div>
       </motion.div>
 

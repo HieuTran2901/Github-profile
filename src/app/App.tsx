@@ -58,11 +58,10 @@ const STORY_STOPS: StoryStop[] = [
   // Chapter 4: Featured Project (SCENE-BASED - Active Dwell Center)
   { id: "ch4", chapter: 3, progress: 3.35, label: "Featured Project Showcase", type: "SCENE_BASED" },
 
-  // Chapter 5: Project Gallery (BEAT-BASED - 4 Projects)
-  { id: "ch5-p1", chapter: 4, progress: 4.15, label: "Gallery / AI Travel", type: "BEAT_BASED" },
-  { id: "ch5-p2", chapter: 4, progress: 4.35, label: "Gallery / Chat Engine", type: "BEAT_BASED" },
-  { id: "ch5-p3", chapter: 4, progress: 4.55, label: "Gallery / Analytics", type: "BEAT_BASED" },
-  { id: "ch5-p4", chapter: 4, progress: 4.75, label: "Gallery / Microservices", type: "BEAT_BASED" },
+  // Chapter 5: Project Gallery (BEAT-BASED - 3 Projects)
+  { id: "ch5-p1", chapter: 4, progress: 4.15, label: "Gallery / AI Study Planner", type: "BEAT_BASED" },
+  { id: "ch5-p2", chapter: 4, progress: 4.50, label: "Gallery / AI Travel Marketplace", type: "BEAT_BASED" },
+  { id: "ch5-p3", chapter: 4, progress: 4.85, label: "Gallery / Developer Control Center", type: "BEAT_BASED" },
 
   // Chapter 6: Workflow (BEAT-BASED - 6 Steps)
   { id: "ch6-s1", chapter: 5, progress: 5.12, label: "Workflow / Idea", type: "BEAT_BASED" },
