@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .parent {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .child {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 0, 0, 0.5);
+    /* No left/top */
+  }
+  .child2 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 255, 0, 0.5);
+    transform: translate(-50%, -50%);
+  }
+</style>
+</head>
+<body>
+  <div class="parent">
+    <div class="child" id="c1"></div>
+    <div class="child2" id="c2"></div>
+  </div>
+  <script>
+    const c1 = document.getElementById('c1').getBoundingClientRect();
+    const c2 = document.getElementById('c2').getBoundingClientRect();
+    console.log("Child 1 (Flex absolute):", c1.left, c1.top);
+    console.log("Child 2 (left/top 50% + translate):", c2.left, c2.top);
+    const fs = require('fs');
+    fs.writeFileSync('out.txt', `Child 1: ${c1.left}, ${c1.top}\nChild 2: ${c2.left}, ${c2.top}`);
+  </script>
+</body>
+</html>
