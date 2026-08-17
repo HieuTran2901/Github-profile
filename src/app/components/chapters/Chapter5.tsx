@@ -540,26 +540,11 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25, delay: 0.04 }}
-              className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed mb-4 font-light"
+              className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed font-light"
             >
               {currentProj.description}
             </motion.p>
           </AnimatePresence>
-
-          {/* Role + View Project Button */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
-              <span>👤</span>
-              <span>{currentProj.role}</span>
-            </div>
-
-            <button
-              className="px-5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600/30 via-indigo-600/20 to-purple-600/30 border border-cyan-400/50 text-cyan-200 text-xs font-mono font-bold tracking-widest uppercase hover:bg-cyan-500/25 hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all cursor-pointer flex items-center gap-2"
-            >
-              <span>VIEW PROJECT</span>
-              <span className="text-sm">➔</span>
-            </button>
-          </div>
         </div>
 
         {/* ========================================================================= */}
