@@ -12,8 +12,6 @@ import { Chapter3 } from "./components/chapters/Chapter3";
 import { Chapter4 } from "./components/chapters/Chapter4";
 import { Chapter5 } from "./components/chapters/Chapter5";
 import { Chapter6 } from "./components/chapters/Chapter6";
-import { Chapter7 } from "./components/chapters/Chapter7";
-import { Chapter8 } from "./components/chapters/Chapter8";
 
 export type MousePos = { x: number; y: number };
 export const ScrollCtx = createContext<{ progress: number; mouse: MousePos }>({
@@ -26,12 +24,12 @@ export const MotionCtx = createContext<{ motionProgress: MotionValue<number> | n
   mouse: { x: 0, y: 0 },
 });
 
-const TOTAL_CHAPTERS = 8;
+const TOTAL_CHAPTERS = 6;
 // Story height calibrated for responsive storytelling pacing
 const SCROLL_SPACE_HEIGHT = `${TOTAL_CHAPTERS * 75}vh`;
 
-const CHAPTER_LABELS = ["INTRO", "JOURNEY", "SKILLS", "PROJECT", "GALLERY", "WORKFLOW", "STATS", "CONTACT"];
-const ChapterComponents = [Chapter1, Chapter2, Chapter3, Chapter4, Chapter5, Chapter6, Chapter7, Chapter8];
+const CHAPTER_LABELS = ["INTRO", "JOURNEY", "SKILLS", "PROJECT", "GALLERY", "CONTACT"];
+const ChapterComponents = [Chapter1, Chapter2, Chapter3, Chapter4, Chapter5, Chapter6];
 
 interface StoryStop {
   id: string;
@@ -63,19 +61,8 @@ const STORY_STOPS: StoryStop[] = [
   { id: "ch5-p2", chapter: 4, progress: 4.50, label: "Gallery / AI Travel Marketplace", type: "BEAT_BASED" },
   { id: "ch5-p3", chapter: 4, progress: 4.85, label: "Gallery / Developer Control Center", type: "BEAT_BASED" },
 
-  // Chapter 6: Workflow (BEAT-BASED - 6 Steps)
-  { id: "ch6-s1", chapter: 5, progress: 5.12, label: "Workflow / Idea", type: "BEAT_BASED" },
-  { id: "ch6-s2", chapter: 5, progress: 5.24, label: "Workflow / Architecture", type: "BEAT_BASED" },
-  { id: "ch6-s3", chapter: 5, progress: 5.36, label: "Workflow / Backend", type: "BEAT_BASED" },
-  { id: "ch6-s4", chapter: 5, progress: 5.48, label: "Workflow / Frontend", type: "BEAT_BASED" },
-  { id: "ch6-s5", chapter: 5, progress: 5.60, label: "Workflow / AI Layer", type: "BEAT_BASED" },
-  { id: "ch6-s6", chapter: 5, progress: 5.72, label: "Workflow / Deployment", type: "BEAT_BASED" },
-
-  // Chapter 7: Stats (SCENE-BASED - Active Dwell Center)
-  { id: "ch7", chapter: 6, progress: 6.35, label: "Stats & GitHub Activity", type: "SCENE_BASED" },
-
-  // Chapter 8: Contact (SCENE-BASED - Closing Scene)
-  { id: "ch8", chapter: 7, progress: 7.00, label: "Contact & Connect", type: "SCENE_BASED" },
+  // Chapter 6: Contact (SCENE-BASED - Closing Scene)
+  { id: "ch6", chapter: 5, progress: 5.00, label: "Contact & Connect", type: "SCENE_BASED" },
 ];
 
 export default function App() {
