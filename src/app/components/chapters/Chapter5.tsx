@@ -2,6 +2,7 @@ import { useState, useContext, memo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence, useTransform, useMotionValueEvent, useSpring } from "motion/react";
 import type { MotionValue } from "motion/react";
 import { MotionCtx } from "../../App";
+import { TechnologyChip } from "../TechnologyChip";
 import studyplan from "../../../assets/studyplan.png";
 import studyplan1 from "../../../assets/studyplan1.png";
 import studyplan2 from "../../../assets/studyplan2.png";
@@ -17,11 +18,6 @@ interface Props {
   globalProgress: number;
 }
 
-interface TechBadge {
-  name: string;
-  icon: string;
-}
-
 interface StoryProject {
   id: string;
   index: number;
@@ -35,7 +31,7 @@ interface StoryProject {
   status: string;
   description: string;
   role: string;
-  technologies: TechBadge[];
+  technologies: string[];
   heroImage: string;
   detailImages: string[];
   accent: string;
@@ -58,13 +54,13 @@ const projects: StoryProject[] = [
       "AI-powered study planning platform for organizing learning goals, schedules, progress, and personalized study workflows.",
     role: "Full-Stack Developer",
     technologies: [
-      { name: "React", icon: "⚛️" },
-      { name: "TypeScript", icon: "TS" },
-      { name: "Vite", icon: "⚡" },
-      { name: "Tailwind v4", icon: "🎨" },
-      { name: "Framer Motion", icon: "✨" },
-      { name: "Spring Boot", icon: "🌱" },
-      { name: "Java", icon: "☕" },
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Spring Boot",
+      "Java",
     ],
     heroImage: studyplan,
     detailImages: [studyplan, studyplan1, studyplan2],
@@ -86,13 +82,13 @@ const projects: StoryProject[] = [
       "AI-powered travel marketplace combining personalized recommendations, real-time travel workflows, and scalable backend services.",
     role: "Lead Developer",
     technologies: [
-      { name: "Java", icon: "☕" },
-      { name: "Spring Boot", icon: "🌱" },
-      { name: "React", icon: "⚛️" },
-      { name: "TypeScript", icon: "TS" },
-      { name: "OpenAI", icon: "🤖" },
-      { name: "AWS", icon: "☁️" },
-      { name: "Docker", icon: "🐳" },
+      "Java",
+      "Spring Boot",
+      "React",
+      "TypeScript",
+      "OpenAI",
+      "AWS",
+      "Docker",
     ],
     heroImage: travel,
     detailImages: [travel, travel1, travel2],
@@ -114,12 +110,12 @@ const projects: StoryProject[] = [
       "Desktop developer control center for managing processes, terminals, workspaces, diagnostics, and development workflows.",
     role: "Full-Stack Systems Engineer",
     technologies: [
-      { name: "Tauri", icon: "🐂" },
-      { name: "Rust", icon: "🦀" },
-      { name: "React", icon: "⚛️" },
-      { name: "TypeScript", icon: "TS" },
-      { name: "Tailwind CSS", icon: "🎨" },
-      { name: "IPC", icon: "⚡" },
+      "Tauri",
+      "Rust",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "IPC",
     ],
     heroImage: dcc,
     detailImages: [dcc, dcc1],
@@ -275,13 +271,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
               {/* Verified Technologies Row */}
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {proj.technologies.slice(0, 5).map((t) => (
-                  <span
-                    key={t.name}
-                    className="px-2.5 py-0.5 rounded-full bg-slate-900/90 border border-white/10 text-white/80 text-[10px] font-mono tracking-wide backdrop-blur-md shadow-sm flex items-center gap-1"
-                  >
-                    <span>{t.icon}</span>
-                    <span>{t.name}</span>
-                  </span>
+                  <TechnologyChip key={t} name={t} size="sm" />
                 ))}
               </div>
 
@@ -550,13 +540,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
           {/* Technology Badges Row */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 mb-2.5">
             {currentProj.technologies.map((t) => (
-              <span
-                key={t.name}
-                className="px-3 py-1 rounded-full bg-slate-900/80 border border-white/10 text-white/80 text-[10px] font-mono tracking-wide backdrop-blur-md shadow-sm flex items-center gap-1.5"
-              >
-                <span>{t.icon}</span>
-                <span>{t.name}</span>
-              </span>
+              <TechnologyChip key={t} name={t} size="md" />
             ))}
           </div>
 

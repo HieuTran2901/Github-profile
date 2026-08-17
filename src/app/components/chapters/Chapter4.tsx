@@ -1,6 +1,7 @@
 import { useState, useContext, memo } from "react";
 import { motion, useTransform, useMotionValueEvent } from "motion/react";
 import { MotionCtx } from "../../App";
+import { TechnologyChip } from "../TechnologyChip";
 import travelEvidence from "../../../assets/travel2.JPG";
 
 interface Props {
@@ -40,15 +41,7 @@ const verifiedFacts = [
   },
 ];
 
-const techStack = [
-  { name: "Java", icon: "☕" },
-  { name: "Spring Boot", icon: "🌱" },
-  { name: "React", icon: "⚛️" },
-  { name: "TypeScript", icon: "TS" },
-  { name: "OpenAI", icon: "🤖" },
-  { name: "AWS", icon: "☁️" },
-  { name: "Docker", icon: "🐳" },
-];
+const techStack = ["Java", "Spring Boot", "React", "TypeScript", "OpenAI", "AWS", "Docker"];
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -176,13 +169,7 @@ export const Chapter4 = memo(function Chapter4({ visible }: Props) {
           {/* Verified Technology Badges */}
           <div className="flex flex-wrap gap-1.5 mb-5">
             {techStack.map((tech) => (
-              <span
-                key={tech.name}
-                className="px-2.5 py-1 rounded-full bg-slate-900/80 border border-white/10 text-white/80 text-[10px] font-mono tracking-wide backdrop-blur-md shadow-sm flex items-center gap-1.5"
-              >
-                <span>{tech.icon}</span>
-                <span>{tech.name}</span>
-              </span>
+              <TechnologyChip key={tech} name={tech} size="md" />
             ))}
           </div>
 
