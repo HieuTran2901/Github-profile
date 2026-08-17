@@ -29,6 +29,8 @@ interface StoryProject {
   subtitle: string;
   category: string;
   status: string;
+  systemIdentity: string;
+  systemCharacteristics: string[];
   description: string;
   role: string;
   technologies: string[];
@@ -50,6 +52,8 @@ const projects: StoryProject[] = [
     subtitle: "AI-Powered Study & Workflow Planning",
     category: "Frontend · Full Stack · AI",
     status: "PRODUCTION",
+    systemIdentity: "AI-ASSISTED LEARNING PLATFORM",
+    systemCharacteristics: ["AI / PLANNING", "SCHEDULE OPTIMIZATION", "PERSONALIZED WORKFLOW"],
     description:
       "AI-powered study planning platform for organizing learning goals, schedules, progress, and personalized study workflows.",
     role: "Full-Stack Developer",
@@ -78,6 +82,8 @@ const projects: StoryProject[] = [
     subtitle: "Intelligent Travel & Booking Platform",
     category: "Full Stack · AI",
     status: "PRODUCTION",
+    systemIdentity: "AI-POWERED TRAVEL ECOSYSTEM",
+    systemCharacteristics: ["AI / LLM", "REAL-TIME WORKFLOWS", "DISTRIBUTED BACKEND"],
     description:
       "AI-powered travel marketplace combining personalized recommendations, real-time travel workflows, and scalable backend services.",
     role: "Lead Developer",
@@ -106,6 +112,8 @@ const projects: StoryProject[] = [
     subtitle: "Desktop Developer Tooling & Diagnostics",
     category: "Desktop Tooling · Systems",
     status: "PRODUCTION",
+    systemIdentity: "AI-ASSISTED DEVELOPER TOOLING",
+    systemCharacteristics: ["DESKTOP TOOLING", "SYSTEM MANAGEMENT", "AI-ASSISTED WORKSPACE"],
     description:
       "Desktop developer control center for managing processes, terminals, workspaces, diagnostics, and development workflows.",
     role: "Full-Stack Systems Engineer",
@@ -503,47 +511,51 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
           transformStyle: "preserve-3d",
         }}
       >
-        {/* BILLBOARD PROJECT HEADER (Center-Top) */}
-        <div className="flex flex-col items-center text-center max-w-2xl mb-2 z-20" style={{ transform: "translateZ(30px)" }}>
-          {/* Status & Category Badge */}
-          <div className="flex items-center gap-2.5 mb-1.5">
-            <span className="px-2.5 py-0.5 rounded bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-[10px] font-mono font-bold tracking-widest uppercase shadow-[0_0_12px_rgba(34,211,238,0.3)]">
-              {currentProj.status}
-            </span>
-            <span className="text-[11px] font-mono tracking-wider text-white/60">
-              {currentProj.category}
-            </span>
-          </div>
-
-          {/* Large Project Title */}
+        {/* PROJECT CONTEXT / SYSTEM IDENTITY HEADER (Center-Top) */}
+        <div className="flex flex-col items-center text-center max-w-2xl mb-1 z-20" style={{ transform: "translateZ(30px)" }}>
           <AnimatePresence mode="wait">
-            <motion.h2
-              key={currentProj.id}
-              initial={{ opacity: 0, y: -8 }}
+            <motion.div
+              key={`context-${currentProj.id}`}
+              initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ duration: 0.25 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2"
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.22 }}
+              className="flex flex-col items-center"
             >
-              <span>{currentProj.title.replace(currentProj.titleAccent, "")}</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-purple-300">
-                {currentProj.titleAccent}
-              </span>
-            </motion.h2>
-          </AnimatePresence>
+              {/* Project Number + Date + Status Line */}
+              <div className="flex items-center gap-3 mb-1.5">
+                <span className="text-[11px] font-mono font-bold tracking-widest text-cyan-400">
+                  PROJECT {currentProj.numberStr}
+                </span>
+                <span className="w-1 h-1 rounded-full bg-white/30" />
+                <span className="text-[11px] font-mono tracking-wider text-white/50">
+                  {currentProj.date}
+                </span>
+                <span className="w-1 h-1 rounded-full bg-white/30" />
+                <span className="px-2 py-0.5 rounded bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[9px] font-mono font-bold tracking-widest uppercase shadow-[0_0_8px_rgba(34,211,238,0.25)]">
+                  {currentProj.status}
+                </span>
+              </div>
 
-          {/* Concise Verified Project Description */}
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={`desc-${currentProj.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, delay: 0.04 }}
-              className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed font-light"
-            >
-              {currentProj.description}
-            </motion.p>
+              {/* High-Level System Identity (Concise, not duplicating active card title) */}
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-wider text-white uppercase mb-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-indigo-200">
+                  {currentProj.systemIdentity}
+                </span>
+              </h2>
+
+              {/* Key System Characteristics (Styled as minimal uppercase metadata dividers, NOT technology badges) */}
+              <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[10px] sm:text-[11px] font-mono tracking-widest text-cyan-300/80">
+                {currentProj.systemCharacteristics.map((char, idx) => (
+                  <span key={char} className="flex items-center gap-2.5">
+                    <span>{char}</span>
+                    {idx < currentProj.systemCharacteristics.length - 1 && (
+                      <span className="text-white/25">·</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </AnimatePresence>
         </div>
 
