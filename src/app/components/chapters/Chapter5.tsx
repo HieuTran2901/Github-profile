@@ -409,18 +409,26 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
 
   // Continuous scroll animations via MotionValue
   const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.12;
-    const exiting = v > 0.88;
-    return entering ? easeOut(v / 0.12) : exiting ? 1 - easeOut((v - 0.88) / 0.10) : 1;
+    if (v < -0.30) return 0;
+    if (v < 0) return easeOut((v + 0.30) / 0.30);
+    if (v <= 0.88) return 1;
+    if (v < 0.98) return 1 - easeOut((v - 0.88) / 0.10);
+    return 0;
   });
 
   const translateY = useTransform(cp, (v) => {
-    const entering = v < 0.12;
-    const exiting = v > 0.88;
-    return entering ? (1 - easeOut(v / 0.12)) * 30 : exiting ? -easeOut((v - 0.88) / 0.10) * 20 : 0;
+    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
+    if (v > 0.88) return -easeOut((v - 0.88) / 0.10) * 20;
+    return 0;
   });
 
-  const pointerEvents = useTransform(cp, (v) => (v >= 0.05 && v <= 0.90 ? "auto" : "none"));
+  const scale = useTransform(cp, (v) => {
+    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
+    if (v > 0.88) return 1 - easeOut((v - 0.88) / 0.10) * 0.015;
+    return 1;
+  });
+
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.90 ? "auto" : "none"));
 
   // Spatial Parallax & Tilt MotionValues
   const rotateX = useTransform(cp, () => mouse.y * -3.5);
@@ -435,6 +443,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
       className="absolute inset-0 flex flex-col justify-between overflow-hidden select-none"
       style={{
         opacity,
+        scale,
         y: translateY,
         pointerEvents,
         perspective: "1400px",

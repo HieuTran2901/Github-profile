@@ -78,16 +78,21 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
   });
 
   const opacity = useTransform(cp, (v) => {
-    const exiting = v > 0.75;
-    return exiting ? 1 - easeOut((v - 0.75) / 0.25) : 1;
+    const exiting = v > 0.70;
+    return exiting ? 1 - easeOut((v - 0.70) / 0.30) : 1;
   });
 
-  const scale = useTransform(cp, (v) => (v > 0.75 ? 1 - ((v - 0.75) / 0.25) * 0.08 : 1));
+  const scale = useTransform(cp, (v) => {
+    const exiting = v > 0.70;
+    return exiting ? 1 - easeOut((v - 0.70) / 0.30) * 0.015 : 1;
+  });
 
   const translateY = useTransform(cp, (v) => {
-    const exiting = v > 0.75;
-    return exiting ? -((v - 0.75) / 0.25) * 30 : 0;
+    const exiting = v > 0.70;
+    return exiting ? -easeOut((v - 0.70) / 0.30) * 24 : 0;
   });
+
+  const pointerEvents = useTransform(cp, (v) => (v <= 0.85 ? "auto" : "none"));
 
   // 3D Spatial Depth MotionValues
   const rotateX = useTransform(cp, (v) => (v > 0 ? -v * 8 : 0));
@@ -100,11 +105,12 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
 
   return (
     <motion.div
-      className="absolute inset-0 flex flex-col justify-between overflow-hidden px-6 md:px-12 lg:px-16 py-6"
+      className="absolute inset-0 flex flex-col justify-between overflow-hidden px-6 md:px-12 lg:px-16 py-6 select-none"
       style={{
         opacity,
         scale,
         y: translateY,
+        pointerEvents,
         perspective: "1200px",
         transformStyle: "preserve-3d",
       }}

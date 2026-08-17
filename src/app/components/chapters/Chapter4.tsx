@@ -64,16 +64,26 @@ export const Chapter4 = memo(function Chapter4({ visible }: Props) {
   });
 
   const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.18;
-    const exiting = v > 0.78;
-    return entering ? easeOut(v / 0.18) : exiting ? 1 - easeOut((v - 0.78) / 0.22) : 1;
+    if (v < -0.30) return 0;
+    if (v < 0) return easeOut((v + 0.30) / 0.30);
+    if (v <= 0.70) return 1;
+    if (v < 1.00) return 1 - easeOut((v - 0.70) / 0.30);
+    return 0;
   });
 
   const translateY = useTransform(cp, (v) => {
-    const entering = v < 0.18;
-    const exiting = v > 0.78;
-    return entering ? (1 - easeOut(v / 0.18)) * 60 : exiting ? -easeOut((v - 0.78) / 0.22) * 40 : 0;
+    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
+    if (v > 0.70) return -easeOut((v - 0.70) / 0.30) * 24;
+    return 0;
   });
+
+  const scale = useTransform(cp, (v) => {
+    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
+    if (v > 0.70) return 1 - easeOut((v - 0.70) / 0.30) * 0.015;
+    return 1;
+  });
+
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.85 ? "auto" : "none"));
 
   // 3D Parallax Depth MotionValues
   const mockupRotateX = useTransform(cp, (v) => (v > 0 ? -v * 4 : 0) - mouse.y * 5);
@@ -86,7 +96,9 @@ export const Chapter4 = memo(function Chapter4({ visible }: Props) {
       className="absolute inset-0 flex flex-col justify-between overflow-hidden px-6 md:px-12 lg:px-16 py-6 select-none"
       style={{
         opacity,
+        scale,
         y: translateY,
+        pointerEvents,
         perspective: "1200px",
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",

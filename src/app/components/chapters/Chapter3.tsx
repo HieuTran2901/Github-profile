@@ -49,15 +49,26 @@ export const Chapter3 = memo(function Chapter3({ visible }: Props) {
   });
 
   const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.18;
-    const exiting = v > 0.78;
-    return entering ? easeOut(v / 0.18) : exiting ? 1 - easeOut((v - 0.78) / 0.22) : 1;
+    if (v < -0.30) return 0;
+    if (v < 0) return easeOut((v + 0.30) / 0.30);
+    if (v <= 0.70) return 1;
+    if (v < 1.00) return 1 - easeOut((v - 0.70) / 0.30);
+    return 0;
+  });
+
+  const translateY = useTransform(cp, (v) => {
+    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
+    if (v > 0.70) return -easeOut((v - 0.70) / 0.30) * 24;
+    return 0;
   });
 
   const scale = useTransform(cp, (v) => {
-    const exiting = v > 0.78;
-    return exiting ? 1 + easeOut((v - 0.78) / 0.22) * 0.06 : 1;
+    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
+    if (v > 0.70) return 1 - easeOut((v - 0.70) / 0.30) * 0.015;
+    return 1;
   });
+
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.85 ? "auto" : "none"));
 
   // 3D Spatial Depth MotionValues (Orbit Plane Tilt derived from mouse & subtle scroll)
   const rotateX = useTransform(cp, (v) => (v > 0 ? -v * 4 : 0) - mouse.y * 5);
@@ -67,10 +78,12 @@ export const Chapter3 = memo(function Chapter3({ visible }: Props) {
 
   return (
     <motion.div
-      className="absolute inset-0 flex items-center justify-between overflow-hidden px-6 md:px-12 lg:px-16"
+      className="absolute inset-0 flex items-center justify-between overflow-hidden px-6 md:px-12 lg:px-16 select-none"
       style={{
         opacity,
         scale,
+        y: translateY,
+        pointerEvents,
         perspective: "1400px",
         perspectiveOrigin: "60% 50%",
         transformStyle: "preserve-3d",

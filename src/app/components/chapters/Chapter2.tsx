@@ -289,23 +289,28 @@ export const Chapter2 = memo(function Chapter2({ visible }: Props) {
   }, [visible, currentEvidence.length, isHovered, isTabVisible, activeMilestone]);
 
   const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.15;
-    const exiting = v > 0.8;
-    return entering ? easeOut(v / 0.15) : exiting ? 1 - easeOut((v - 0.8) / 0.2) : 1;
-  });
-
-  const translateX = useTransform(cp, (v) => {
-    const entering = v < 0.15;
-    const exiting = v > 0.8;
-    return entering ? -40 * (1 - easeOut(v / 0.15)) : exiting ? -30 * easeOut((v - 0.8) / 0.2) : 0;
+    if (v < -0.30) return 0;
+    if (v < 0) return easeOut((v + 0.30) / 0.30);
+    if (v <= 0.70) return 1;
+    if (v < 1.00) return 1 - easeOut((v - 0.70) / 0.30);
+    return 0;
   });
 
   const translateY = useTransform(cp, (v) => {
-    const exiting = v > 0.8;
-    return exiting ? -20 * easeOut((v - 0.8) / 0.2) : 0;
+    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
+    if (v > 0.70) return -easeOut((v - 0.70) / 0.30) * 24;
+    return 0;
   });
 
-  const lineProgress = useTransform(cp, (v) => clamp(0, 1, (v - 0.15) / 0.65));
+  const scale = useTransform(cp, (v) => {
+    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
+    if (v > 0.70) return 1 - easeOut((v - 0.70) / 0.30) * 0.015;
+    return 1;
+  });
+
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.85 ? "auto" : "none"));
+
+  const lineProgress = useTransform(cp, (v) => clamp(0, 1, (v - 0.10) / 0.70));
   const lineHeight = useTransform(lineProgress, (v) => `${v * 100}%`);
 
   // 3D Spatial Depth MotionValues
@@ -316,11 +321,12 @@ export const Chapter2 = memo(function Chapter2({ visible }: Props) {
 
   return (
     <motion.div
-      className="absolute inset-0 flex flex-col justify-between overflow-hidden px-6 md:px-12 lg:px-16 py-6"
+      className="absolute inset-0 flex flex-col justify-between overflow-hidden px-6 md:px-12 lg:px-16 py-6 select-none"
       style={{
         opacity,
-        x: translateX,
+        scale,
         y: translateY,
+        pointerEvents,
         perspective: "1200px",
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
