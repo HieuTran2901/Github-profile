@@ -14,17 +14,53 @@ function easeOut(t: number) {
 }
 
 const BADGES = [
-  { icon: "</>", label: "Clean Code" },
-  { icon: "✦", label: "Problem Solver" },
-  { icon: "🧠", label: "AI Enthusiast" },
-  { icon: "🚀", label: "Always Learning" },
+  { icon: "</>", label: "Clean Code", color: "text-cyan-400" },
+  { icon: "✦", label: "Problem Solver", color: "text-purple-400" },
+  { icon: "🧠", label: "AI Enthusiast", color: "text-pink-400" },
+  { icon: "🚀", label: "Always Learning", color: "text-amber-400" },
 ];
 
 const STATS = [
-  { icon: "💼", value: "15+", label: "Projects" },
-  { icon: "💻", value: "3+", label: "Years Coding" },
-  { icon: "🥞", value: "9+", label: "Technologies" },
-  { icon: "❤️", value: "∞", label: "Passion" },
+  {
+    icon: (
+      <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+      </svg>
+    ),
+    value: "10+",
+    title: "Projects",
+    sub: "Completed",
+  },
+  {
+    icon: (
+      <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    value: "3+",
+    title: "Years Coding",
+    sub: "Experience",
+  },
+  {
+    icon: (
+      <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      </svg>
+    ),
+    value: "9+",
+    title: "Technologies",
+    sub: "Core Stack",
+  },
+  {
+    icon: (
+      <svg className="w-4 h-4 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      </svg>
+    ),
+    value: "∞",
+    title: "Passion",
+    sub: "For Building",
+  },
 ];
 
 export const Chapter1 = memo(function Chapter1({ visible }: Props) {
@@ -73,11 +109,11 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
         transformStyle: "preserve-3d",
       }}
     >
-      {/* Mouse parallax ambient radial glow */}
+      {/* Ambient background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(circle 650px at ${50 + mouse.x * 15}% ${50 + mouse.y * 12}%, rgba(56,189,248,0.08) 0%, rgba(168,85,247,0.05) 40%, transparent 70%)`,
+          background: `radial-gradient(circle 700px at ${50 + mouse.x * 15}% ${50 + mouse.y * 12}%, rgba(56,189,248,0.09) 0%, rgba(168,85,247,0.06) 40%, transparent 70%)`,
           transition: "background 0.2s ease",
         }}
       />
@@ -91,18 +127,20 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
         }}
       />
 
-      {/* TOP HEADER BAR */}
+      {/* ========================================================================= */}
+      {/* 1. TOP HEADER BAR */}
+      {/* ========================================================================= */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={mounted ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative z-20 flex items-center justify-between w-full pt-2"
+        className="relative z-20 flex items-center justify-between w-full pt-1"
         style={{ transform: "translateZ(30px)" }}
       >
         {/* Top Left: Chapter Pill Badge */}
         <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-950/60 border border-white/10 backdrop-blur-md shadow-lg">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]" />
-          <span className="text-[10px] font-mono tracking-[0.25em] text-white/70 uppercase">
+          <span className="text-[10px] font-mono tracking-[0.25em] text-white/80 uppercase font-medium">
             CHAPTER 01 / INTRODUCTION
           </span>
         </div>
@@ -110,13 +148,12 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
         {/* Top Right: Social Icons Bar & Download CV Button */}
         <div className="flex items-center gap-3">
           {/* Social icons pill */}
-          <div className="hidden sm:flex items-center gap-3 px-4 py-1.5 rounded-full bg-slate-950/60 border border-white/10 backdrop-blur-md">
+          <div className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-slate-950/60 border border-white/10 backdrop-blur-md">
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Profile"
-              data-hover="true"
               className="text-white/50 hover:text-cyan-400 transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -128,7 +165,6 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn Profile"
-              data-hover="true"
               className="text-white/50 hover:text-cyan-400 transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -138,7 +174,6 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             <a
               href="mailto:tranhuutrunghieu@example.com"
               aria-label="Send Email"
-              data-hover="true"
               className="text-white/50 hover:text-cyan-400 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
@@ -150,19 +185,20 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
           {/* Download CV button */}
           <a
             href="#contact"
-            data-hover="true"
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500/15 via-purple-500/10 to-pink-500/15 border border-cyan-400/40 text-cyan-300 text-[11px] font-medium tracking-wider hover:border-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all"
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold tracking-wide shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all cursor-pointer"
           >
             <span>Download CV</span>
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
           </a>
         </div>
       </motion.div>
 
-      {/* MAIN 2-COLUMN HERO CONTENT */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full max-w-7xl mx-auto my-auto py-2">
+      {/* ========================================================================= */}
+      {/* 2. MAIN 2-COLUMN HERO CONTENT */}
+      {/* ========================================================================= */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full max-w-7xl mx-auto my-auto py-2">
         {/* LEFT COLUMN: IDENTITY & CONTENT (7 cols on lg) */}
         <motion.div
           className="lg:col-span-7 flex flex-col items-start text-left"
@@ -178,7 +214,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             initial={{ opacity: 0, x: -20 }}
             animate={mounted ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="flex items-center gap-2 mb-3.5"
+            className="flex items-center gap-2 mb-3"
             style={{ transform: "translateZ(20px)" }}
           >
             <span className="text-sm">👋</span>
@@ -192,12 +228,14 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             initial={{ opacity: 0, y: 30 }}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-3.5"
+            className="mb-3"
             style={{ transform: "translateZ(60px)", transformStyle: "preserve-3d" }}
           >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
               TRAN HUU <br />
-              <span className="text-white/90">TRUNG HIEU</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-400 to-purple-500">
+                TRUNG HIEU
+              </span>
             </h1>
           </motion.div>
 
@@ -209,7 +247,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             className="mb-4"
             style={{ transform: "translateZ(40px)" }}
           >
-            <span className="text-sm sm:text-base md:text-lg font-bold tracking-[0.22em] bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent uppercase">
+            <span className="text-sm sm:text-base md:text-lg font-bold tracking-[0.22em] text-white/90 uppercase">
               AI FULL STACK DEVELOPER
             </span>
           </motion.div>
@@ -219,7 +257,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             initial={{ opacity: 0, y: 16 }}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-            className="text-white/60 text-sm sm:text-base leading-relaxed max-w-xl mb-7 font-light tracking-wide"
+            className="text-white/65 text-sm sm:text-base leading-relaxed max-w-xl mb-7 font-light tracking-wide"
             style={{ transform: "translateZ(30px)" }}
           >
             I build intelligent, scalable and high-performance web applications with modern technologies and AI integration.
@@ -235,36 +273,30 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
           >
             {/* Primary CTA */}
             <button
-              data-hover="true"
               onClick={() => {
                 const el = document.getElementById("chapter-3");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-medium text-xs tracking-widest uppercase shadow-[0_0_25px_rgba(34,211,238,0.35)] hover:shadow-[0_0_35px_rgba(168,85,247,0.5)] hover:scale-[1.02] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-purple-600 text-white font-bold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(34,211,238,0.35)] hover:shadow-[0_0_35px_rgba(168,85,247,0.5)] hover:scale-[1.02] transition-all cursor-pointer"
             >
               <span>View My Work</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
+              <span className="text-sm">➔</span>
             </button>
 
             {/* Secondary CTA */}
             <button
-              data-hover="true"
               onClick={() => {
                 const el = document.getElementById("chapter-7");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white/80 font-medium text-xs tracking-widest uppercase hover:bg-white/[0.08] hover:border-white/30 hover:text-white transition-all cursor-pointer"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-950/70 border border-white/15 text-white/90 font-bold text-xs tracking-wider uppercase hover:bg-slate-900/90 hover:border-white/30 hover:text-white transition-all cursor-pointer"
             >
               <span>Contact Me</span>
-              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
+              <span className="text-sm">💬</span>
             </button>
           </motion.div>
 
-          {/* Feature Badges Row */}
+          {/* Capability Tags Row */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
@@ -275,9 +307,9 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             {BADGES.map((b) => (
               <div
                 key={b.label}
-                className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/[0.02] border border-white/10 text-white/70 text-[11px] tracking-wider backdrop-blur-sm"
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-950/60 border border-white/10 text-white/75 text-[11px] tracking-wider backdrop-blur-sm shadow-sm"
               >
-                <span className="text-cyan-400 font-mono font-bold">{b.icon}</span>
+                <span className={`${b.color} font-mono font-bold`}>{b.icon}</span>
                 <span>{b.label}</span>
               </div>
             ))}
@@ -286,7 +318,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
 
         {/* RIGHT COLUMN: REAL AVATAR & STATS DASHBOARD CARD (5 cols on lg) */}
         <motion.div
-          className="lg:col-span-5 flex flex-col items-center justify-center relative mt-6 lg:mt-0"
+          className="lg:col-span-5 flex flex-col items-center justify-center relative mt-4 lg:mt-0"
           style={{
             rotateX,
             rotateY,
@@ -303,22 +335,34 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
             style={{ transformStyle: "preserve-3d" }}
           >
             {/* ========================================================================= */}
-            {/* 1. REAL AVATAR HERO CONTAINER */}
+            {/* AVATAR HERO CONTAINER WITH 3D ORBITAL RINGS */}
             {/* ========================================================================= */}
-            <div className="relative w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center mb-6" style={{ transformStyle: "preserve-3d" }}>
-              {/* Subtle Ambient Orbital Lines Behind Avatar */}
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center mb-4" style={{ transformStyle: "preserve-3d" }}>
+              {/* Tilted Elliptical Orbit Ring with Glowing Nodes */}
               <div
-                className="absolute inset-0 rounded-full border border-cyan-400/20 border-dashed animate-[spin_26s_linear_infinite] pointer-events-none"
-                style={{ transform: "rotateX(65deg) rotateY(15deg) translateZ(-20px)" }}
-              />
+                className="absolute inset-[-18px] rounded-full border border-cyan-400/25 pointer-events-none"
+                style={{
+                  transform: "rotateX(68deg) rotateY(18deg) translateZ(-15px)",
+                  boxShadow: "0 0 35px rgba(34,211,238,0.2)",
+                }}
+              >
+                {/* Glowing Nodes along the orbit */}
+                <div className="absolute top-2 left-6 w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee]" />
+                <div className="absolute bottom-4 right-8 w-2 h-2 rounded-full bg-purple-300 shadow-[0_0_8px_#c084fc]" />
+                <div className="absolute top-1/2 -right-1 w-1.5 h-1.5 rounded-full bg-sky-300 shadow-[0_0_6px_#38bdf8]" />
+              </div>
+
+              {/* Secondary faint outer orbit */}
               <div
-                className="absolute inset-[-14px] rounded-full border border-purple-500/20 border-dashed animate-[spin_34s_linear_infinite_reverse] pointer-events-none"
-                style={{ transform: "rotateX(45deg) rotateY(-25deg) translateZ(-35px)" }}
+                className="absolute inset-[-32px] rounded-full border border-purple-500/15 pointer-events-none"
+                style={{
+                  transform: "rotateX(72deg) rotateY(-12deg) translateZ(-25px)",
+                }}
               />
 
-              {/* Glowing Rim Glass Avatar Frame */}
+              {/* Vibrant Gradient Rim Glass Avatar Frame */}
               <div
-                className="w-48 h-48 sm:w-56 sm:h-56 rounded-full p-1.5 bg-gradient-to-tr from-cyan-500/30 via-indigo-500/20 to-purple-500/30 border border-cyan-400/40 shadow-[0_0_50px_rgba(34,211,238,0.28)] flex items-center justify-center relative overflow-hidden backdrop-blur-md"
+                className="w-52 h-52 sm:w-60 sm:h-60 rounded-full p-1 bg-gradient-to-tr from-cyan-400 via-sky-500 to-purple-500 shadow-[0_0_50px_rgba(34,211,238,0.35),0_0_80px_rgba(168,85,247,0.25)] flex items-center justify-center relative overflow-hidden backdrop-blur-md"
                 style={{ transform: "translateZ(30px)" }}
               >
                 {/* Real Person Avatar Image */}
@@ -332,35 +376,40 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
               </div>
             </div>
 
+            {/* Location & Availability Row */}
+            <div className="flex items-center justify-between w-full max-w-md px-2 mb-2.5 text-xs">
+              <div className="flex items-center gap-1.5 text-white/70 font-mono">
+                <span className="text-cyan-400">📍</span>
+                <span>Viet Nam, GMT+7</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#22c55e]" />
+                <span className="text-emerald-400 font-mono font-medium tracking-wide text-[11px]">
+                  Available for work
+                </span>
+              </div>
+            </div>
+
             {/* ========================================================================= */}
-            {/* 2. STATS & AVAILABILITY CARD */}
+            {/* STATS DASHBOARD CARD (Clean 4-column layout matching reference) */}
             {/* ========================================================================= */}
             <div
-              className="w-full max-w-md p-5 rounded-2xl bg-[#070f1e]/85 border border-cyan-500/20 backdrop-blur-xl shadow-[0_15px_40px_rgba(0,0,0,0.6)] relative z-10"
+              className="w-full max-w-md p-4 sm:p-5 rounded-2xl bg-slate-950/70 border border-white/10 backdrop-blur-xl shadow-[0_15px_40px_rgba(0,0,0,0.6)] relative z-10"
               style={{ transform: "translateZ(45px)" }}
             >
-              {/* Card Header: Location & Availability status */}
-              <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-white/10 text-xs">
-                <div className="flex items-center gap-1.5 text-white/75">
-                  <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>Viet Nam</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#22c55e]" />
-                  <span className="text-emerald-400 font-medium tracking-wide text-[11px]">Available for work</span>
-                </div>
-              </div>
-
-              {/* 4 Metric Columns */}
-              <div className="grid grid-cols-4 gap-2 text-center">
-                {STATS.map((s) => (
-                  <div key={s.label} className="flex flex-col items-center">
-                    <span className="text-xs mb-1 opacity-70">{s.icon}</span>
-                    <span className="text-base sm:text-lg font-bold text-white font-mono tracking-tight">{s.value}</span>
-                    <span className="text-[10px] text-white/50 tracking-wider mt-0.5">{s.label}</span>
+              <div className="grid grid-cols-4 divide-x divide-white/10 text-center">
+                {STATS.map((s, idx) => (
+                  <div key={idx} className={`flex flex-col items-center ${idx > 0 ? "pl-2" : ""} ${idx < 3 ? "pr-2" : ""}`}>
+                    <div className="mb-1">{s.icon}</div>
+                    <span className="text-lg sm:text-xl font-extrabold text-white font-mono tracking-tight leading-tight">
+                      {s.value}
+                    </span>
+                    <span className="text-[10px] text-white/75 font-medium tracking-tight mt-0.5">
+                      {s.title}
+                    </span>
+                    <span className="text-[8px] text-white/40 tracking-wider">
+                      {s.sub}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -376,17 +425,17 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
         initial={{ opacity: 0, y: 10 }}
         animate={mounted ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-        className="relative z-20 flex flex-col items-center justify-center pb-2 pointer-events-none"
+        className="relative z-20 flex flex-col items-center justify-center pb-1 pointer-events-none"
         style={{ transform: "translateZ(20px)" }}
       >
         {/* Mouse Icon */}
-        <div className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1 mb-1.5">
+        <div className="w-5 h-8 rounded-full border-2 border-white/30 flex items-start justify-center p-1 mb-1">
           <div className="w-1 h-2 rounded-full bg-cyan-400 animate-bounce" />
         </div>
         <span className="text-[9px] font-mono tracking-[0.3em] text-white/40 uppercase">
           SCROLL TO EXPLORE
         </span>
-        <svg className="w-3.5 h-3.5 text-white/30 mt-1 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+        <svg className="w-3.5 h-3.5 text-white/30 mt-0.5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </motion.div>
