@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, memo, useCallback } from "react";
 import { motion, AnimatePresence, useTransform, useMotionValueEvent } from "motion/react";
 import { MotionCtx } from "../../App";
+import { TechnologyChip } from "../TechnologyChip";
 
 // Static imports for Real Evidence Assets
 import tiktokUI from "../../../assets/tiktok_ui.png";
@@ -31,11 +32,6 @@ interface SlideItem {
   desc?: string;
 }
 
-interface TechTag {
-  name: string;
-  icon: string;
-}
-
 interface MilestoneData {
   step: string;
   year: string;
@@ -44,7 +40,7 @@ interface MilestoneData {
   detail: string;
   color: string;
   category: string;
-  tags: TechTag[];
+  tags: string[];
   evidenceBadge: string;
 }
 
@@ -154,12 +150,7 @@ const milestones: MilestoneData[] = [
     detail: "Started studying at the University of Transport and Communications. Began learning UI development and took the first steps by building a TikTok UI clone to practice layout, interaction and frontend fundamentals.",
     color: "#38bdf8",
     category: "FRONTEND DEVELOPMENT",
-    tags: [
-      { name: "University", icon: "🏛️" },
-      { name: "UI Development", icon: "🎨" },
-      { name: "Frontend", icon: "💻" },
-      { name: "TikTok UI Clone", icon: "📱" },
-    ],
+    tags: ["React", "JavaScript", "HTML5", "CSS3"],
     evidenceBadge: "2022 / FRONTEND DEVELOPMENT",
   },
   {
@@ -170,12 +161,7 @@ const milestones: MilestoneData[] = [
     detail: "Built a souvenir e-commerce website from scratch using PHP, HTML and CSS, gaining hands-on experience with web structure, UI implementation and backend-driven web development.",
     color: "#818cf8",
     category: "FULL-STACK WEB DEVELOPMENT",
-    tags: [
-      { name: "PHP", icon: "🐘" },
-      { name: "HTML", icon: "🌐" },
-      { name: "CSS", icon: "🎨" },
-      { name: "E-commerce", icon: "🛍️" },
-    ],
+    tags: ["PHP", "MySQL", "HTML5", "CSS3"],
     evidenceBadge: "2023 / FULL-STACK WEB DEVELOPMENT",
   },
   {
@@ -186,12 +172,7 @@ const milestones: MilestoneData[] = [
     detail: "Started exploring Artificial Intelligence and computer vision. Trained a YOLO-based model to detect traffic accidents, helmet violations and traffic-light violations.",
     color: "#a855f7",
     category: "COMPUTER VISION",
-    tags: [
-      { name: "AI", icon: "🧠" },
-      { name: "YOLO", icon: "🎯" },
-      { name: "Computer Vision", icon: "👁️" },
-      { name: "Object Detection", icon: "🔍" },
-    ],
+    tags: ["Python", "YOLO", "OpenCV", "PyTorch"],
     evidenceBadge: "2024 / YOLO DETECTION",
   },
   {
@@ -202,12 +183,7 @@ const milestones: MilestoneData[] = [
     detail: "Started integrating AI into personal websites and applications. Built a system that calculates user spending, analyzes the difference between income and expenses, and provides AI assistance for personal expense management.",
     color: "#ec4899",
     category: "AI INTEGRATION",
-    tags: [
-      { name: "AI Integration", icon: "🤖" },
-      { name: "Finance", icon: "📊" },
-      { name: "Web Application", icon: "💻" },
-      { name: "AI Assistant", icon: "💬" },
-    ],
+    tags: ["React", "TypeScript", "Node.js", "OpenAI"],
     evidenceBadge: "2025 / AI EXPENSE ASSISTANT",
   },
   {
@@ -218,13 +194,7 @@ const milestones: MilestoneData[] = [
     detail: "Started using agent coding tools such as Antigravity, Codex and Claude Code to improve development efficiency. Focused on building higher-quality interfaces and applications with intelligent AI assistance while maintaining engineering quality.",
     color: "#38bdf8",
     category: "AGENTIC WORKFLOW",
-    tags: [
-      { name: "Antigravity", icon: "🚀" },
-      { name: "Codex", icon: "⚡" },
-      { name: "Claude Code", icon: "🤖" },
-      { name: "AI-Assisted", icon: "🛠️" },
-      { name: "UI Optimization", icon: "🎯" },
-    ],
+    tags: ["Antigravity", "Codex", "Claude Code", "TypeScript", "React"],
     evidenceBadge: "2026 / AGENTIC WORKFLOW",
   },
 ];
@@ -565,16 +535,12 @@ export const Chapter2 = memo(function Chapter2({ visible }: Props) {
             className="flex flex-wrap gap-2.5"
           >
             {currentMs.tags.map((tag) => (
-              <div
-                key={tag.name}
-                className="px-3.5 py-1.5 rounded-xl bg-slate-900/70 border border-sky-400/30 text-sky-200 text-xs font-mono backdrop-blur-md hover:border-sky-400/70 hover:scale-105 transition-all shadow-md flex items-center gap-2 cursor-default"
-                style={{
-                  boxShadow: `0 0 12px ${currentMs.color}15`,
-                }}
-              >
-                <span className="text-sm">{tag.icon}</span>
-                <span className="font-semibold tracking-wide">{tag.name}</span>
-              </div>
+              <TechnologyChip
+                key={tag}
+                name={tag}
+                size="md"
+                className="hover:scale-105"
+              />
             ))}
           </motion.div>
         </motion.div>
