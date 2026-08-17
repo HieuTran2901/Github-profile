@@ -124,10 +124,11 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
     }
   });
 
-  // Entering animation as user approaches Chapter 6 (cp goes from -0.35 to 0.00)
+  // Entering animation as user approaches Chapter 6 (motionProgress 4.92 -> 5.00)
   // When at Chapter 6 (cp >= 0), opacity is 1.0 and translateY is 0px
-  const opacity = useTransform(cp, [-0.35, 0], [0, 1]);
-  const translateY = useTransform(cp, [-0.35, 0], [30, 0]);
+  const opacity = useTransform(cp, [-0.08, 0], [0, 1]);
+  const translateY = useTransform(cp, [-0.08, 0], [25, 0]);
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.04 ? "auto" : "none"));
 
   // Parallax Tilt MotionValues
   const rotateX = useTransform(cp, (v) => v * -3);
@@ -167,6 +168,7 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
       style={{
         opacity,
         y: translateY,
+        pointerEvents,
         perspective: "1200px",
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",

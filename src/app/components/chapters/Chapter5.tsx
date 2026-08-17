@@ -420,14 +420,17 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
   // Continuous scroll animations via MotionValue
   const opacity = useTransform(cp, (v) => {
     const entering = v < 0.12;
-    const exiting = v > 0.86;
-    return entering ? easeOut(v / 0.12) : exiting ? 1 - easeOut((v - 0.86) / 0.14) : 1;
+    const exiting = v > 0.88;
+    return entering ? easeOut(v / 0.12) : exiting ? 1 - easeOut((v - 0.88) / 0.10) : 1;
   });
 
   const translateY = useTransform(cp, (v) => {
     const entering = v < 0.12;
-    return entering ? (1 - easeOut(v / 0.12)) * 30 : 0;
+    const exiting = v > 0.88;
+    return entering ? (1 - easeOut(v / 0.12)) * 30 : exiting ? -easeOut((v - 0.88) / 0.10) * 20 : 0;
   });
+
+  const pointerEvents = useTransform(cp, (v) => (v >= 0.05 && v <= 0.90 ? "auto" : "none"));
 
   // Spatial Parallax & Tilt MotionValues
   const rotateX = useTransform(cp, () => mouse.y * -3.5);
@@ -443,6 +446,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
       style={{
         opacity,
         y: translateY,
+        pointerEvents,
         perspective: "1400px",
         transformStyle: "preserve-3d",
         willChange: "transform, opacity",
