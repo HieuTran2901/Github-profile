@@ -93,16 +93,13 @@ const socials = [
   },
 ];
 
-function easeOut(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
 function clamp(min: number, max: number, val: number) {
   return Math.max(min, Math.min(max, val));
 }
 
 export const Chapter8 = memo(function Chapter8({ visible }: Props) {
   const { mouse, motionProgress } = useContext(MotionCtx);
-  const [triggered, setTriggered] = useState(false);
+  const [triggered, setTriggered] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [copiedLocation, setCopiedLocation] = useState(false);
@@ -118,23 +115,19 @@ export const Chapter8 = memo(function Chapter8({ visible }: Props) {
   const [isSent, setIsSent] = useState(false);
 
   // Local scene progress extracted from global motionProgress (Chapter 8 = index 7)
-  const cp = useTransform(motionProgress!, (v: number) => clamp(-0.5, 1.5, v - 7));
+  // When at Chapter 8, motionProgress = 7.00, so cp = 0.00
+  const cp = useTransform(motionProgress!, (v: number) => clamp(-0.5, 0.5, v - 7));
 
   useMotionValueEvent(cp, "change", (latest) => {
-    if (latest > 0.08 && !triggered) {
+    if (latest > -0.2 && !triggered) {
       setTriggered(true);
     }
   });
 
-  const opacity = useTransform(cp, (v) => {
-    const entering = v < 0.18;
-    return entering ? easeOut(v / 0.18) : 1;
-  });
-
-  const translateY = useTransform(cp, (v) => {
-    const entering = v < 0.18;
-    return entering ? (1 - easeOut(v / 0.18)) * 50 : 0;
-  });
+  // Entering animation as user approaches Chapter 8 (cp goes from -0.35 to 0.00)
+  // When at Chapter 8 (cp >= 0), opacity is 1.0 and translateY is 0px
+  const opacity = useTransform(cp, [-0.35, 0], [0, 1]);
+  const translateY = useTransform(cp, [-0.35, 0], [30, 0]);
 
   // Parallax Tilt MotionValues
   const rotateX = useTransform(cp, (v) => v * -3);
