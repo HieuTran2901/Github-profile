@@ -289,26 +289,26 @@ export const Chapter2 = memo(function Chapter2({ visible }: Props) {
   }, [visible, currentEvidence.length, isHovered, isTabVisible, activeMilestone]);
 
   const opacity = useTransform(cp, (v) => {
-    if (v < -0.30) return 0;
-    if (v < 0) return easeOut((v + 0.30) / 0.30);
-    if (v <= 0.70) return 1;
-    if (v < 1.00) return 1 - easeOut((v - 0.70) / 0.30);
+    if (v < -0.20) return 0;
+    if (v < 0.05) return easeOut((v + 0.20) / 0.25);
+    if (v <= 0.80) return 1;
+    if (v < 0.98) return 1 - easeOut((v - 0.80) / 0.18);
     return 0;
   });
 
   const translateY = useTransform(cp, (v) => {
-    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
-    if (v > 0.70) return -easeOut((v - 0.70) / 0.30) * 24;
+    if (v < 0.05) return (1 - easeOut((v + 0.20) / 0.25)) * 24;
+    if (v > 0.80) return -easeOut((v - 0.80) / 0.18) * 24;
     return 0;
   });
 
   const scale = useTransform(cp, (v) => {
-    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
-    if (v > 0.70) return 1 - easeOut((v - 0.70) / 0.30) * 0.015;
+    if (v < 0.05) return 0.985 + easeOut((v + 0.20) / 0.25) * 0.015;
+    if (v > 0.80) return 1 - easeOut((v - 0.80) / 0.18) * 0.015;
     return 1;
   });
 
-  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.85 ? "auto" : "none"));
+  const pointerEvents = useTransform(cp, (v) => (v >= -0.05 && v <= 0.85 ? "auto" : "none"));
 
   const lineProgress = useTransform(cp, (v) => clamp(0, 1, (v - 0.10) / 0.70));
   const lineHeight = useTransform(lineProgress, (v) => `${v * 100}%`);

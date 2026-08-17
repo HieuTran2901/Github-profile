@@ -90,7 +90,14 @@ export default function App() {
 
   // Discrete state update for ChapterNav and chapter visibility (Fires ONLY when active chapter changes)
   useMotionValueEvent(motionProgress, "change", (latest) => {
-    const currentCh = Math.min(TOTAL_CHAPTERS - 1, Math.max(0, Math.floor(latest + 0.3)));
+    let currentCh = 0;
+    if (latest < 0.85) currentCh = 0; // Chapter 1: Intro (0.00)
+    else if (latest < 1.85) currentCh = 1; // Chapter 2: Journey (1.10 - 1.75)
+    else if (latest < 2.85) currentCh = 2; // Chapter 3: Skills (2.35)
+    else if (latest < 3.85) currentCh = 3; // Chapter 4: Featured Project (3.35)
+    else if (latest < 4.90) currentCh = 4; // Chapter 5: Project Gallery (4.15 - 4.85)
+    else currentCh = 5;                    // Chapter 6: Contact (5.00)
+
     if (currentCh !== activeChapter) {
       setActiveChapter(currentCh);
     }

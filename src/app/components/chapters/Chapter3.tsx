@@ -49,26 +49,26 @@ export const Chapter3 = memo(function Chapter3({ visible }: Props) {
   });
 
   const opacity = useTransform(cp, (v) => {
-    if (v < -0.30) return 0;
-    if (v < 0) return easeOut((v + 0.30) / 0.30);
-    if (v <= 0.70) return 1;
-    if (v < 1.00) return 1 - easeOut((v - 0.70) / 0.30);
+    if (v < -0.10) return 0;
+    if (v < 0.10) return easeOut((v + 0.10) / 0.20);
+    if (v <= 0.65) return 1;
+    if (v < 0.95) return 1 - easeOut((v - 0.65) / 0.30);
     return 0;
   });
 
   const translateY = useTransform(cp, (v) => {
-    if (v < 0) return (1 - easeOut((v + 0.30) / 0.30)) * 24;
-    if (v > 0.70) return -easeOut((v - 0.70) / 0.30) * 24;
+    if (v < 0.10) return (1 - easeOut((v + 0.10) / 0.20)) * 24;
+    if (v > 0.65) return -easeOut((v - 0.65) / 0.30) * 24;
     return 0;
   });
 
   const scale = useTransform(cp, (v) => {
-    if (v < 0) return 0.985 + easeOut((v + 0.30) / 0.30) * 0.015;
-    if (v > 0.70) return 1 - easeOut((v - 0.70) / 0.30) * 0.015;
+    if (v < 0.10) return 0.985 + easeOut((v + 0.10) / 0.20) * 0.015;
+    if (v > 0.65) return 1 - easeOut((v - 0.65) / 0.30) * 0.015;
     return 1;
   });
 
-  const pointerEvents = useTransform(cp, (v) => (v >= -0.15 && v <= 0.85 ? "auto" : "none"));
+  const pointerEvents = useTransform(cp, (v) => (v >= 0.00 && v <= 0.75 ? "auto" : "none"));
 
   // 3D Spatial Depth MotionValues (Orbit Plane Tilt derived from mouse & subtle scroll)
   const rotateX = useTransform(cp, (v) => (v > 0 ? -v * 4 : 0) - mouse.y * 5);
