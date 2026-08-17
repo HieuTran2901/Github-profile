@@ -270,7 +270,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
 
               {/* Verified Technologies Row */}
               <div className="flex flex-wrap gap-1.5 mb-3">
-                {proj.technologies.slice(0, 5).map((t) => (
+                {proj.technologies.map((t) => (
                   <TechnologyChip key={t} name={t} size="sm" />
                 ))}
               </div>
@@ -540,18 +540,11 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25, delay: 0.04 }}
-              className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed mb-3 font-light"
+              className="text-xs sm:text-sm text-white/70 max-w-xl line-clamp-2 leading-relaxed mb-4 font-light"
             >
               {currentProj.description}
             </motion.p>
           </AnimatePresence>
-
-          {/* Technology Badges Row */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 mb-2.5">
-            {currentProj.technologies.map((t) => (
-              <TechnologyChip key={t} name={t} size="md" />
-            ))}
-          </div>
 
           {/* Role + View Project Button */}
           <div className="flex items-center gap-4">
