@@ -17,12 +17,6 @@ interface Props {
   globalProgress: number;
 }
 
-interface ProjectMetric {
-  icon: string;
-  label: string;
-  value: string;
-}
-
 interface TechBadge {
   name: string;
   icon: string;
@@ -42,7 +36,6 @@ interface StoryProject {
   description: string;
   role: string;
   technologies: TechBadge[];
-  metrics: ProjectMetric[];
   heroImage: string;
   detailImages: string[];
   accent: string;
@@ -59,7 +52,7 @@ const projects: StoryProject[] = [
     title: "AI Study Planner",
     titleAccent: "Planner",
     subtitle: "AI-Powered Study & Workflow Planning",
-    category: "Full Stack · AI",
+    category: "Frontend · Full Stack · AI",
     status: "PRODUCTION",
     description:
       "AI-powered study planning platform for organizing learning goals, schedules, progress, and personalized study workflows.",
@@ -72,11 +65,6 @@ const projects: StoryProject[] = [
       { name: "Framer Motion", icon: "✨" },
       { name: "Spring Boot", icon: "🌱" },
       { name: "Java", icon: "☕" },
-    ],
-    metrics: [
-      { icon: "🎯", label: "Workflows", value: "8+ Planners" },
-      { icon: "⚡", label: "Performance", value: "99.8% Speed" },
-      { icon: "👥", label: "Active Users", value: "300+ Users" },
     ],
     heroImage: studyplan,
     detailImages: [studyplan, studyplan1, studyplan2],
@@ -95,7 +83,7 @@ const projects: StoryProject[] = [
     category: "Full Stack · AI",
     status: "PRODUCTION",
     description:
-      "Intelligent travel platform with LLM-powered recommendations, real-time pricing, and distributed microservices architecture serving 500+ users.",
+      "AI-powered travel marketplace combining personalized recommendations, real-time travel workflows, and scalable backend services.",
     role: "Lead Developer",
     technologies: [
       { name: "Java", icon: "☕" },
@@ -105,11 +93,6 @@ const projects: StoryProject[] = [
       { name: "OpenAI", icon: "🤖" },
       { name: "AWS", icon: "☁️" },
       { name: "Docker", icon: "🐳" },
-    ],
-    metrics: [
-      { icon: "🧩", label: "Microservices", value: "12+ Services" },
-      { icon: "⚡", label: "Performance", value: "99.9% Uptime" },
-      { icon: "👥", label: "Active Users", value: "500+ Active" },
     ],
     heroImage: travel,
     detailImages: [travel, travel1, travel2],
@@ -138,11 +121,6 @@ const projects: StoryProject[] = [
       { name: "Tailwind CSS", icon: "🎨" },
       { name: "IPC", icon: "⚡" },
     ],
-    metrics: [
-      { icon: "⚡", label: "Diagnostics", value: "< 2ms IPC" },
-      { icon: "🛡️", label: "Architecture", value: "Rust Core" },
-      { icon: "📦", label: "Workspaces", value: "Multi-Process" },
-    ],
     heroImage: dcc,
     detailImages: [dcc, dcc1],
     accent: "#10b981",
@@ -158,7 +136,7 @@ function clamp(min: number, max: number, val: number) {
 }
 
 // =========================================================================
-// ORBITAL PROJECT CARD (Exact match to user reference composition)
+// ORBITAL PROJECT CARD (Clean credible layout with verified stack & role)
 // =========================================================================
 const OrbitProjectCard = memo(function OrbitProjectCard({
   proj,
@@ -286,25 +264,31 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
                 </span>
               </div>
 
-              {/* Title & Short Description */}
+              {/* Title & Short Verified Description */}
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
                 {proj.title}
               </h3>
-              <p className="text-xs text-white/70 line-clamp-2 leading-relaxed mb-4 font-light">
+              <p className="text-xs text-white/70 line-clamp-3 leading-relaxed mb-3.5 font-light">
                 {proj.description}
               </p>
 
-              {/* 3 Metrics Items (Matching Reference) */}
-              <div className="space-y-1.5 pt-2 border-t border-white/10">
-                {proj.metrics.map((m, mIdx) => (
-                  <div key={mIdx} className="flex items-center justify-between text-[11px] font-mono">
-                    <div className="flex items-center gap-1.5 text-white/60">
-                      <span className="text-xs">{m.icon}</span>
-                      <span>{m.label}</span>
-                    </div>
-                    <span className="text-cyan-300 font-semibold">{m.value}</span>
-                  </div>
+              {/* Verified Technologies Row */}
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {proj.technologies.slice(0, 5).map((t) => (
+                  <span
+                    key={t.name}
+                    className="px-2.5 py-0.5 rounded-full bg-slate-900/90 border border-white/10 text-white/80 text-[10px] font-mono tracking-wide backdrop-blur-md shadow-sm flex items-center gap-1"
+                  >
+                    <span>{t.icon}</span>
+                    <span>{t.name}</span>
+                  </span>
                 ))}
+              </div>
+
+              {/* Verified Role Badge */}
+              <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
+                <span>👤</span>
+                <span>{proj.role}</span>
               </div>
             </div>
 
@@ -363,7 +347,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
 export const Chapter5 = memo(function Chapter5({ visible }: Props) {
   const { mouse, motionProgress } = useContext(MotionCtx);
   const [triggered, setTriggered] = useState(false);
-  const [activeProject, setActiveProject] = useState(1); // Default to Project 02 (Travel) as in reference
+  const [activeProject, setActiveProject] = useState(1);
   const [activeDetailImage, setActiveDetailImage] = useState<string>("");
   const [isAutoRotating, setIsAutoRotating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -409,7 +393,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
     setActiveProject((prev) => (prev + 1) % projects.length);
   }, []);
 
-  // Autonomous Orbit Rotation timer (controlled via the reference toggle switch)
+  // Autonomous Orbit Rotation timer
   useEffect(() => {
     if (!visible || !isAutoRotating || isHovered) return;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -545,7 +529,7 @@ export const Chapter5 = memo(function Chapter5({ visible }: Props) {
             </motion.h2>
           </AnimatePresence>
 
-          {/* Concise Project Description */}
+          {/* Concise Verified Project Description */}
           <AnimatePresence mode="wait">
             <motion.p
               key={`desc-${currentProj.id}`}
