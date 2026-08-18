@@ -8,50 +8,6 @@ interface Props {
   globalProgress: number;
 }
 
-const valueHighlights = [
-  {
-    icon: (
-      <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-    title: "Fast Response",
-    desc: "I usually reply within 24 hours",
-    accent: "bg-purple-500/10 border-purple-500/20",
-  },
-  {
-    icon: (
-      <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    ),
-    title: "Open to Opportunities",
-    desc: "Full-time, Freelance, Projects",
-    accent: "bg-cyan-500/10 border-cyan-500/20",
-  },
-  {
-    icon: (
-      <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
-    title: "Tech & AI Enthusiast",
-    desc: "Passionate about building impact",
-    accent: "bg-indigo-500/10 border-indigo-500/20",
-  },
-  {
-    icon: (
-      <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: "Remote Friendly",
-    desc: "Available worldwide",
-    accent: "bg-emerald-500/10 border-emerald-500/20",
-  },
-];
-
 const socials = [
   {
     label: "GitHub",
@@ -75,8 +31,18 @@ const socials = [
     label: "Email",
     href: "mailto:trunghieu10a1thptll@gmail.com",
     icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
       </svg>
     ),
   },
@@ -84,7 +50,13 @@ const socials = [
     label: "Website",
     href: "#",
     icon: (
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+      <svg
+        className="w-3.5 h-3.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+      >
         <circle cx="12" cy="12" r="10" />
         <line x1="2" y1="12" x2="22" y2="12" />
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -116,7 +88,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
 
   // Local scene progress extracted from global motionProgress (Chapter 6 = index 5)
   // When at Chapter 6, motionProgress = 5.00, so cp = 0.00
-  const cp = useTransform(motionProgress!, (v: number) => clamp(-0.5, 0.5, v - 5));
+  const cp = useTransform(motionProgress!, (v: number) =>
+    clamp(-0.5, 0.5, v - 5),
+  );
 
   useMotionValueEvent(cp, "change", (latest) => {
     if (latest > -0.2 && !triggered) {
@@ -135,19 +109,22 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
   const rotateX = useTransform(cp, (v) => v * -3);
   const rotateY = useTransform(cp, () => mouse.x * 5);
 
-  const handleCopy = useCallback((text: string, type: "email" | "phone" | "location") => {
-    navigator.clipboard.writeText(text);
-    if (type === "email") {
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
-    } else if (type === "phone") {
-      setCopiedPhone(true);
-      setTimeout(() => setCopiedPhone(false), 2000);
-    } else {
-      setCopiedLocation(true);
-      setTimeout(() => setCopiedLocation(false), 2000);
-    }
-  }, []);
+  const handleCopy = useCallback(
+    (text: string, type: "email" | "phone" | "location") => {
+      navigator.clipboard.writeText(text);
+      if (type === "email") {
+        setCopiedEmail(true);
+        setTimeout(() => setCopiedEmail(false), 2000);
+      } else if (type === "phone") {
+        setCopiedPhone(true);
+        setTimeout(() => setCopiedPhone(false), 2000);
+      } else {
+        setCopiedLocation(true);
+        setTimeout(() => setCopiedLocation(false), 2000);
+      }
+    },
+    [],
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -189,7 +166,8 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
       <div
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)",
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)",
           backgroundSize: "36px 36px",
         }}
       />
@@ -234,7 +212,10 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
         }}
       >
         {/* LEFT COLUMN: IDENTITY & CONTACT INFORMATION (5 cols on lg) */}
-        <div className="lg:col-span-5 flex flex-col items-start text-left" style={{ transform: "translateZ(30px)" }}>
+        <div
+          className="lg:col-span-5 flex flex-col items-start text-left"
+          style={{ transform: "translateZ(30px)" }}
+        >
           {/* Header Tag */}
           <span className="text-[11px] font-mono font-bold tracking-[0.25em] text-cyan-400 uppercase mb-2">
             LET'S CONNECT
@@ -250,7 +231,8 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
 
           {/* Description */}
           <p className="text-white/70 text-xs sm:text-sm leading-relaxed max-w-md mb-5 font-light tracking-wide">
-            I'm always open to discussing new opportunities, innovative projects, or just having a friendly chat about technology and AI.
+            I'm always open to discussing new opportunities, innovative
+            projects, or just having a friendly chat about technology and AI.
           </p>
 
           {/* Contact Information Section Header */}
@@ -265,8 +247,18 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
             <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-950/70 border border-white/10 backdrop-blur-md hover:border-cyan-400/40 transition-all">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-400/30 flex items-center justify-center text-purple-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <div>
@@ -282,15 +274,29 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                 </div>
               </div>
               <button
-                onClick={() => handleCopy("trunghieu10a1thptll@gmail.com", "email")}
+                onClick={() =>
+                  handleCopy("trunghieu10a1thptll@gmail.com", "email")
+                }
                 title="Copy Email"
                 className="p-1.5 rounded-lg bg-white/[0.04] border border-white/10 hover:border-cyan-400/40 text-white/60 hover:text-white transition-all cursor-pointer text-xs"
               >
                 {copiedEmail ? (
-                  <span className="text-[10px] text-cyan-300 font-mono font-bold">Copied!</span>
+                  <span className="text-[10px] text-cyan-300 font-mono font-bold">
+                    Copied!
+                  </span>
                 ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
                   </svg>
                 )}
               </button>
@@ -300,8 +306,18 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
             <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-950/70 border border-white/10 backdrop-blur-md hover:border-cyan-400/40 transition-all">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
                   </svg>
                 </div>
                 <div>
@@ -322,10 +338,22 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                 className="p-1.5 rounded-lg bg-white/[0.04] border border-white/10 hover:border-cyan-400/40 text-white/60 hover:text-white transition-all cursor-pointer text-xs"
               >
                 {copiedPhone ? (
-                  <span className="text-[10px] text-cyan-300 font-mono font-bold">Copied!</span>
+                  <span className="text-[10px] text-cyan-300 font-mono font-bold">
+                    Copied!
+                  </span>
                 ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
                   </svg>
                 )}
               </button>
@@ -335,9 +363,23 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
             <div className="flex items-center justify-between p-2.5 sm:p-3 rounded-xl bg-slate-950/70 border border-white/10 backdrop-blur-md hover:border-cyan-400/40 transition-all">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                 </div>
                 <div>
@@ -355,10 +397,22 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                 className="p-1.5 rounded-lg bg-white/[0.04] border border-white/10 hover:border-cyan-400/40 text-white/60 hover:text-white transition-all cursor-pointer text-xs"
               >
                 {copiedLocation ? (
-                  <span className="text-[10px] text-cyan-300 font-mono font-bold">Copied!</span>
+                  <span className="text-[10px] text-cyan-300 font-mono font-bold">
+                    Copied!
+                  </span>
                 ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
                   </svg>
                 )}
               </button>
@@ -390,20 +444,38 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
           <div className="p-3 rounded-xl bg-slate-950/50 border border-white/10 w-full max-w-md flex items-start gap-2.5">
             <span className="text-xl text-cyan-400/80 leading-none">❝</span>
             <div className="text-[11px] text-white/60 leading-relaxed">
-              <p>Great things in business are never done by one person. They're done by a team of people.</p>
-              <span className="text-cyan-400/70 font-mono text-[10px] block mt-0.5">— Steve Jobs</span>
+              <p>
+                Great things in business are never done by one person. They're
+                done by a team of people.
+              </p>
+              <span className="text-cyan-400/70 font-mono text-[10px] block mt-0.5">
+                — Steve Jobs
+              </span>
             </div>
           </div>
         </div>
 
         {/* RIGHT COLUMN: INTERACTIVE CONTACT FORM CARD (7 cols on lg) */}
-        <div className="lg:col-span-7 flex justify-center" style={{ transform: "translateZ(40px)" }}>
+        <div
+          className="lg:col-span-7 flex justify-center"
+          style={{ transform: "translateZ(40px)" }}
+        >
           <div className="w-full max-w-xl p-6 sm:p-7 rounded-3xl bg-slate-950/80 border border-cyan-400/30 shadow-[0_20px_70px_rgba(0,180,255,0.18)] backdrop-blur-2xl relative">
             {/* Form Header */}
             <div className="flex items-center gap-3.5 mb-5">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500/20 via-sky-500/20 to-purple-500/30 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.25)]">
-                <svg className="w-5 h-5 -rotate-45 ml-0.5 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                <svg
+                  className="w-5 h-5 -rotate-45 ml-0.5 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
                 </svg>
               </div>
               <div>
@@ -433,7 +505,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                       required
                       placeholder="Your Name"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       className="w-full bg-slate-900/90 border border-white/15 focus:border-cyan-400 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-400/40 transition-all font-mono"
                     />
                   </div>
@@ -452,7 +526,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                       required
                       placeholder="Your Email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       className="w-full bg-slate-900/90 border border-white/15 focus:border-cyan-400 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-400/40 transition-all font-mono"
                     />
                   </div>
@@ -472,7 +548,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                     type="text"
                     placeholder="Project Inquiry / Job Opportunity"
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                     className="w-full bg-slate-900/90 border border-white/15 focus:border-cyan-400 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-400/40 transition-all font-mono"
                   />
                 </div>
@@ -492,7 +570,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                     rows={4}
                     placeholder="Write your message here..."
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     className="w-full bg-slate-900/90 border border-white/15 focus:border-cyan-400 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:ring-1 focus:ring-cyan-400/40 transition-all font-mono resize-none"
                   />
                 </div>
@@ -507,7 +587,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
                 {isSubmitting ? (
                   <span>Sending Message...</span>
                 ) : isSent ? (
-                  <span className="text-emerald-300">Message Sent Successfully! ✓</span>
+                  <span className="text-emerald-300">
+                    Message Sent Successfully! ✓
+                  </span>
                 ) : (
                   <>
                     <span>Send Message</span>
@@ -519,7 +601,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
               {/* Privacy Statement */}
               <div className="flex items-center justify-center gap-1.5 text-[10px] text-white/45 font-mono pt-1 text-center">
                 <span className="text-cyan-400 text-xs">🛡️</span>
-                <span>Your information is safe with me. I respect your privacy.</span>
+                <span>
+                  Your information is safe with me. I respect your privacy.
+                </span>
               </div>
             </form>
           </div>
@@ -527,31 +611,9 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
       </motion.div>
 
       {/* ========================================================================= */}
-      {/* 3. BOTTOM VALUE HIGHLIGHTS & FOOTER */}
+      {/* 3. BOTTOM FOOTER CUE */}
       {/* ========================================================================= */}
       <div className="relative z-20 flex flex-col items-center w-full max-w-7xl mx-auto pt-2 pb-1">
-        {/* Value Highlights Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mb-3">
-          {valueHighlights.map((val, idx) => (
-            <div
-              key={idx}
-              className={`p-2.5 sm:p-3 rounded-xl bg-slate-950/70 border backdrop-blur-md flex items-center gap-3 ${val.accent}`}
-            >
-              <div className="p-2 rounded-lg bg-white/[0.04] flex items-center justify-center">
-                {val.icon}
-              </div>
-              <div className="text-left">
-                <span className="text-[11px] font-bold text-white block leading-tight">
-                  {val.title}
-                </span>
-                <span className="text-[9px] text-white/50 tracking-wide block mt-0.5">
-                  {val.desc}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Footer Thank You */}
         <div className="flex flex-col items-center justify-center">
           <span className="text-[9px] font-mono tracking-[0.3em] text-white/40 uppercase">
