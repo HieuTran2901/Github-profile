@@ -156,7 +156,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
           {/* Social icons pill */}
           <div className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-slate-950/60 border border-white/10 backdrop-blur-md">
             <a
-              href="https://github.com"
+              href="https://github.com/HieuTran2901"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Profile"
@@ -178,7 +178,7 @@ export const Chapter1 = memo(function Chapter1({ visible }: Props) {
               </svg>
             </a>
             <a
-              href="mailto:tranhuutrunghieu@example.com"
+              href="mailto:trunghieu10a1thptll@gmail.com"
               aria-label="Send Email"
               className="text-white/50 hover:text-cyan-400 transition-colors"
             >
