@@ -97,10 +97,10 @@ Chapter Transforms (1–6)      Global UI Overlays            Discrete State Tri
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/developer-portfolio-storytelling.git
+git clone https://github.com/HieuTran2901/Github-profile.git
 
 # Navigate to project directory
-cd developer-portfolio-storytelling
+cd Github-profile
 
 # Install dependencies
 npm install
