@@ -1,79 +1,100 @@
 # AI Full Stack Developer Portfolio — 3D Spatial Storytelling Experience
 
-> A high-performance, cinematic 8-chapter developer portfolio engineered with **React**, **TypeScript**, **Framer Motion**, and **CSS 3D Spatial Transforms**. Designed with a **Pure MotionValue Architecture** that decouples continuous scroll animations from the React rendering cycle to achieve a 60 FPS GPU-composited experience with zero continuous React re-renders.
+> A high-performance, cinematic **6-Chapter** developer portfolio engineered with **React**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **CSS 3D Spatial Transforms**. Powered by a **Pure MotionValue Architecture** that decouples continuous scroll-driven animations from React rendering cycles to deliver a fluid 60/120 FPS GPU-composited experience with zero continuous React re-renders.
 
 ---
 
-## 🌟 Live Demo & Portfolio Highlights
+## 🌟 Developer Identity & Highlights
 
 - **Developer**: Tran Huu Trung Hieu (AI Full Stack Developer)
-- **Tech Stack Focus**: Java, Spring Boot, React, TypeScript, OpenAI/LLMs, AWS, Docker, Microservices
-- **Story Arc**: 8 Immersive Storytelling Chapters (Intro → Journey → Skills → Featured Project → Gallery → Workflow → Stats → Contact)
+- **Core Specialization**: Java, Spring Boot, React, TypeScript, Python, OpenCV/YOLO, OpenAI/LLMs, Tauri/Rust, Docker, Cloud & Agentic Systems
+- **Contact**: `trunghieu10a1thptll@gmail.com` · `+84 384 090 045` · Ho Chi Minh City, Vietnam (UTC+7)
+- **Story Structure**: 6 Immersive Storytelling Chapters (Intro → Journey → Skills → Featured Project → Project Gallery → Contact)
 
 ---
 
-## 🏗 System Architecture & Engineering Approach
+## 🏗 System Architecture & Engineering Innovations
 
 ```
-Native Browser Scroll (Document Height: 800vh)
-       │
-       ▼
-Framer Motion `scrollYProgress`
-       │
-       ▼
-Global `motionProgress` (MotionValue<number>)
-       │
-       ├─────────────────────────┬─────────────────────────┐
-       ▼                         ▼                         ▼
-`useTransform` (Chapter 1–8)  `useTransform` (UI)     `useMotionValueEvent`
-(rotateX, rotateY, depth)    (Progress bar, hint)   (Discrete State Only)
-       │                         │                         │
-       ▼                         ▼                         ▼
-motion.div (GPU Composite)    motion.div               React `setActiveChapter`
-(0 FPS React Re-renders)     (0 FPS React Re-renders)  (Fires ONLY on Chapter Change)
+Native Browser Scroll / Wheel Intent / Keyboard / Touch
+                        │
+                        ▼
+Framer Motion `scrollYProgress` (0.0 → 1.0)
+                        │
+                        ▼
+Global `motionProgress` (MotionValue<number> with Liquid useSpring Physics)
+                        │
+        ┌───────────────┴───────────────┬───────────────────────────────┐
+        ▼                               ▼                               ▼
+Chapter Transforms (1–6)      Global UI Overlays            Discrete State Triggers
+• `useTransform(cp)`          • Top Progress Bar Width       • `useMotionValueEvent`
+• Opacity (0 → 1 → 0)         • Scroll Indicator Opacity     • `activeChapter` (0 → 5)
+• Spatial Y & Depth Scale     • Chapter Navigation Active    • Chapter Visibility Mounts
+• 3D Mouse Parallax Tilt      • Scene Transition Ownership   • 0 Continuous Re-renders
+        │                               │                               │
+        ▼                               ▼                               ▼
+   motion.div                      motion.div                     React DOM Dwell
+(GPU Composited)                (GPU Composited)              (Fires ONLY on Chapter Change)
 ```
 
 ### Key Engineering Decisions:
 1. **Pure MotionValue Scroll Engine**:
    - Continuous scroll progress is driven directly by Framer Motion `MotionValue` signals via `useTransform`.
-   - Bypasses React state (`useState`/`setState` per frame), eliminating layout thrashing and forced reflows.
-2. **CSS 3D Spatial Depth System**:
-   - Each scene establishes a unified `perspective: 1200px` container with `transform-style: preserve-3d`.
-   - Z-axis layering (Background: `-120px`, Midground: `+30px`, Foreground: `+60px` to `+80px`) creates a cinematic depth hierarchy without WebGL overhead.
-3. **Throttled Mouse Parallax**:
-   - `mousemove` events are throttled with `requestAnimationFrame` to cap state updates at 60 FPS, mitigating CPU spikes on high-polling rate (1000Hz) gaming mice.
+   - Bypasses React frame-by-frame state updates (`useState`/`setState`), completely eliminating layout thrashing and forced reflows.
+2. **Universal Cinematic Chapter Transition Contract**:
+   - Every chapter implements GPU-accelerated enter/exit transforms (`opacity`, `translateY`, `scale: 0.985 → 1.0`) with calibrated progress windows.
+   - Dynamic `pointerEvents` ownership prevents inactive or exiting scenes from intercepting clicks or form interactions.
+3. **CSS 3D Spatial Depth System**:
+   - Each scene utilizes a unified `perspective: 1200px` container with `transformStyle: preserve-3d`.
+   - Z-axis layering (Celestial Background: `-90px`, Midground Planet/Orbit: `0px`, Foreground Active Card: `+30px` to `+60px`) provides realistic depth without the CPU/GPU footprint of full WebGL canvases.
+4. **Authentic Vector Brand Icon Integration**:
+   - Custom `TechnologyChip` component mapping 27+ official vector SVGs (`React`, `TypeScript`, `Java`, `Spring Boot`, `Python`, `Rust`, `Tauri`, `OpenAI`, `Docker`, `AWS`, etc.) across timeline milestones, featured projects, and orbital cards.
 
 ---
 
 ## 📖 Chapter Breakdown & Recruiter Story Arc
 
-1. **Chapter 01 / Introduction**: Identity, role positioning, and core value proposition.
-2. **Chapter 02 / Journey**: 3D timeline mapping career and learning progression from 2019 to 2024.
-3. **Chapter 03 / Skills**: Interactive 3D skill grid categorized into Frontend, Backend, AI/ML, and DevOps capability clusters.
-4. **Chapter 04 / Featured Project**: Deep dive into *AI Travel Marketplace* with metrics (500+ Active Users, 95% AI Accuracy, 3s Response, 99% SLA), architecture, tech stack, and live CTAs.
-5. **Chapter 05 / Project Gallery**: Interactive 3D Spatial Deck Flip carousel showcasing 4 real-world projects (Distributed Chat Engine, Smart Analytics, Microservices).
-6. **Chapter 06 / Workflow**: 6-step engineering methodology pipeline (Idea → Architecture → Backend → Frontend → AI Layer → Deployment).
-7. **Chapter 07 / Statistics**: Quantified developer activity (3+ years exp, 15+ projects shipped, 100k+ lines of code) + 52-week GitHub contribution activity.
-8. **Chapter 08 / Contact**: Elevated CTA focal point with direct email contact and secure social profile links.
+| Chapter | Title | Architectural Type | Description |
+| :--- | :--- | :--- | :--- |
+| **Chapter 01** | **Introduction** | Scene-Based | Recruiter-friendly hero showcase featuring real avatar (`src/assets/avatar.png`), technical role, core value proposition, direct CTAs (View Projects, Contact, Download CV), and verified capability tags. |
+| **Chapter 02** | **Journey** | Beat-Based (5 Stops) | Interactive 3D career timeline (2022: University of Transport and Communications, 2023: Souvenir E-commerce, 2024: Computer Vision & AI Traffic Monitoring, 2025: AI Workflow Integration, 2026: Agentic Workflow & Autonomous Systems) with official brand tech chips and live proof-of-work screenshot drawer. |
+| **Chapter 03** | **Skills** | Scene-Based | Interactive 3D orbital competency plane grouping skills into Frontend, Backend, AI & Intelligent Systems, and DevOps/Cloud clusters with detailed modal drilldown. |
+| **Chapter 04** | **Featured Project** | Scene-Based | Production deep-dive into *AI Travel Marketplace* featuring verified architecture, real application evidence screenshot (`src/assets/travel2.jpg`), technology stack, and live demonstration links. |
+| **Chapter 05** | **Project Gallery** | Beat-Based (3 Beats) | 3D Celestial Planetary Carousel showcasing 3 flagship production projects:<br>• `01` — **AI Study Planner** (*React, TypeScript, Spring Boot, Java*)<br>• `02` — **AI Travel Marketplace** (*Java, Spring Boot, React, TypeScript, OpenAI, AWS, Docker*)<br>• `03` — **Developer Control Center** (*Tauri, Rust, React, TypeScript, Tailwind CSS, IPC*)<br>Features high-level System Identity, verified System Characteristics metadata, and detailed active card showcase. |
+| **Chapter 06** | **Contact** | Scene-Based | High-conversion recruiter contact terminal with instant copy-to-clipboard functionality (Email, Phone, Location), availability status badge (`Open to Opportunities`), verified social links (GitHub, LinkedIn), and direct contact form. |
 
 ---
 
-## ⚡ Performance & Accessibility Metrics
+## ⚡ Performance & Accessibility Highlights
 
-- **Build Time**: ~2.5s via Vite & ESBuild
-- **Continuous React Scroll Re-renders**: **0**
-- **Console Errors**: **0**
-- **Accessibility**: Support for `@media (prefers-reduced-motion: reduce)`, native keyboard navigation (PageUp, PageDown, Arrows, Home, End), and `rel="noopener noreferrer"` link security.
+- **Build Time**: ~2.5s – 4.0s via Vite & ESBuild
+- **Continuous React Scroll Re-renders**: **0** (Pure MotionValue pipelines)
+- **Lighthouse / Performance**: GPU-accelerated transforms (`will-change: transform, opacity`)
+- **Accessibility & Motion Control**:
+  - Full support for `@media (prefers-reduced-motion: reduce)`
+  - Native keyboard navigation (`ArrowUp`, `ArrowDown`, `PageUp`, `PageDown`, `Home`, `End`)
+  - Trackpad gesture smoothing and wheel intent lock guards
+  - WCAG AAA contrast ratios across dark space theme
 
 ---
 
-## 🛠 Local Development & Build Instructions
+## 🛠 Tech Stack
+
+- **Core**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, Vanilla CSS 3D Transforms
+- **Animation & Physics**: Framer Motion (`MotionValue`, `useTransform`, `useSpring`, `AnimatePresence`)
+- **Icons & Assets**: Custom SVG Brand Vectors (`src/assets/tech-icons/`), Lucide Icons
+- **Tooling**: ESLint, PostCSS, Autoprefixer
+
+---
+
+## 🚀 Local Development & Build Instructions
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher
-- **Package Manager**: npm or pnpm
+- **Package Manager**: `npm` or `pnpm`
 
-### Installation
+### 1. Installation
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/developer-portfolio-storytelling.git
@@ -85,33 +106,60 @@ cd developer-portfolio-storytelling
 npm install
 ```
 
-### Running Locally
+### 2. Running Development Server
 ```bash
 npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Production Build
+### 3. Production Build
 ```bash
 npm run build
 ```
-Generates optimized static assets in the `dist/` directory ready for deployment on **Vercel**, **Netlify**, or **GitHub Pages**.
+Generates production-optimized static bundles in the `dist/` directory.
+
+### 4. Preview Production Build
+```bash
+npm run preview
+```
 
 ---
 
-## 🚀 Deployment Instructions
+## 📂 Project Structure
 
-### Deploying to Vercel
-```bash
-npx vercel
 ```
-
-### Deploying to Netlify
-```bash
-npx netlify-cli deploy --prod
+Github-profile/
+├── docs/                               # Phase reports & architectural documentation
+│   └── storytelling/
+├── public/                             # Public static assets & SVGs
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── chapters/
+│   │   │   │   ├── Chapter1.tsx        # Chapter 01: Hero / Introduction
+│   │   │   │   ├── Chapter2.tsx        # Chapter 02: 3D Career Journey
+│   │   │   │   ├── Chapter3.tsx        # Chapter 03: Skills Orbit Plane
+│   │   │   │   ├── Chapter4.tsx        # Chapter 04: Featured Project Deep-Dive
+│   │   │   │   ├── Chapter5.tsx        # Chapter 05: Planetary Project Gallery
+│   │   │   │   └── Chapter6.tsx        # Chapter 06: Recruiter Contact Hub
+│   │   │   ├── ChapterNav.tsx          # Floating story progression navigator
+│   │   │   └── TechnologyChip.tsx      # Reusable official vector SVG brand chip
+│   │   ├── context/
+│   │   │   ├── MotionContext.tsx       # Global MotionValue context provider
+│   │   │   └── ScrollContext.tsx       # Scroll state context
+│   │   └── App.tsx                     # Story engine, snap points, wheel controller
+│   ├── assets/                         # Project screenshots, avatar, and tech SVGs
+│   │   ├── tech-icons/                 # 27+ official vector brand SVGs
+│   │   └── avatar.png                  # Real developer avatar asset
+│   ├── index.css                       # Global Tailwind CSS & 3D perspective styles
+│   └── main.tsx                        # Application entry point
+├── index.html                          # Root HTML template
+├── package.json                        # Project scripts and dependencies
+├── tsconfig.json                       # TypeScript configuration
+└── vite.config.ts                      # Vite build configuration
 ```
 
 ---
 
 ## 📄 License
-Licensed under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](LICENSE).
