@@ -94,7 +94,6 @@ const projects: StoryProject[] = [
       "TypeScript",
       "OpenAI",
       "AWS",
-      "Docker",
     ],
     heroImage: travel,
     detailImages: [travel, travel1, travel2],

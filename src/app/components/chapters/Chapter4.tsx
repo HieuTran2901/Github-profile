@@ -41,7 +41,7 @@ const verifiedFacts = [
   },
 ];
 
-const techStack = ["Java", "Spring Boot", "React", "TypeScript", "OpenAI", "AWS", "Docker"];
+const techStack = ["Java", "Spring Boot", "React", "TypeScript", "OpenAI", "AWS"];
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
