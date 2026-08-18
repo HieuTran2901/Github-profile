@@ -82,7 +82,6 @@ export default function App() {
 
   // Derived MotionValues for GPU-accelerated global UI elements (0 FPS React re-renders)
   const topProgressBarWidth = useTransform(motionProgress, [0, TOTAL_CHAPTERS - 1], ["0%", "100%"]);
-  const scrollHintOpacity = useTransform(motionProgress, [0, 0.15], [1, 0]);
 
   // Context value memoization
   const motionCtxValue = useMemo(() => ({ motionProgress, mouse }), [motionProgress, mouse]);
@@ -347,20 +346,6 @@ export default function App() {
 
         {/* Custom Cursor */}
         <CustomCursor />
-
-        {/* Scroll hint - GPU animated opacity via MotionValue */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 flex flex-col items-center gap-3 pointer-events-none"
-          style={{
-            transform: "translateX(-50%)",
-            opacity: scrollHintOpacity,
-          }}
-        >
-          <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "10px", letterSpacing: "0.3em" }}>
-            SCROLL TO EXPLORE
-          </span>
-          <div style={{ width: "1px", height: "36px", background: "linear-gradient(180deg, rgba(56,189,248,0.5), transparent)" }} />
-        </motion.div>
 
         {/* Progress bar (thin top) - GPU animated width via MotionValue */}
         <motion.div
