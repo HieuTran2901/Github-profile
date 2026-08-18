@@ -347,15 +347,20 @@ export default function App() {
         {/* Custom Cursor */}
         <CustomCursor />
 
-        {/* Progress bar (thin top) - GPU animated width via MotionValue */}
-        <motion.div
-          className="absolute top-0 left-0 h-px pointer-events-none"
-          style={{
-            width: topProgressBarWidth,
-            background: "linear-gradient(90deg, #38bdf8, #a855f7)",
-            boxShadow: "0 0 8px rgba(56,189,248,0.6)",
-          }}
-        />
+        {/* Modern Global Scroll Progress Bar (Top) */}
+        <div className="absolute top-0 left-0 w-full h-[3px] bg-slate-950/40 backdrop-blur-sm pointer-events-none z-50 overflow-hidden border-b border-white/[0.04]">
+          <motion.div
+            className="h-full relative pointer-events-none"
+            style={{
+              width: topProgressBarWidth,
+              background: "linear-gradient(90deg, #06b6d4 0%, #38bdf8 35%, #818cf8 70%, #c084fc 100%)",
+              boxShadow: "0 0 14px rgba(56,189,248,0.9), 0 0 28px rgba(168,85,247,0.6)",
+            }}
+          >
+            {/* Glowing particle at the trailing edge */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-300 shadow-[0_0_10px_#38bdf8,0_0_20px_#a855f7] opacity-80" />
+          </motion.div>
+        </div>
 
 
       </div>
