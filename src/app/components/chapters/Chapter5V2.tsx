@@ -147,6 +147,9 @@ function clamp(min: number, max: number, val: number) {
 }
 
 // =========================================================================
+const SCREENSHOT_SLIDE_INTERVAL = 4000;
+
+// =========================================================================
 // HIGH-FIDELITY ORBITAL PROJECT CARD (V2: 2:1 Natural Media Frame & Sharp 2D Surface)
 // =========================================================================
 const OrbitProjectCard = memo(function OrbitProjectCard({
@@ -154,17 +157,19 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
   index,
   projectProgress,
   activeProject,
-  activeDetailImage,
-  onSelectDetailImage,
+  activeImageIndex,
+  onSelectImageIndex,
   onSelect,
+  onMediaHover,
 }: {
   proj: StoryProject;
   index: number;
   projectProgress: MotionValue<number>;
   activeProject: number;
-  activeDetailImage: string;
-  onSelectDetailImage: (src: string) => void;
+  activeImageIndex: number;
+  onSelectImageIndex: (idx: number) => void;
   onSelect: (idx: number) => void;
+  onMediaHover: (hovered: boolean) => void;
 }) {
   const x = useTransform(projectProgress, (p) => {
     let rel = index - p;
@@ -204,6 +209,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
   });
 
   const isActive = index === activeProject;
+  const currentImageSrc = proj.detailImages[activeImageIndex] || proj.heroImage;
 
   return (
     <motion.div
@@ -226,14 +232,19 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
       {isActive ? (
         /* ================= ACTIVE CENTER HERO CARD ================= */
         <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-6 items-stretch">
-          {/* Left Media Column (~64% width): Derived directly from natural image dimensions */}
-          <div className="w-full sm:w-[63%] md:w-[65%] flex flex-col gap-2.5">
-            {/* Primary High-Clarity 2D Stable Screenshot Canvas (Zero artificial empty space) */}
+          {/* Left Media Column (~64% width): Natural screenshot aspect ratio with auto-slider */}
+          <div
+            className="w-full sm:w-[63%] md:w-[65%] flex flex-col gap-2.5"
+            onMouseEnter={() => onMediaHover(true)}
+            onMouseLeave={() => onMediaHover(false)}
+          >
+            {/* Primary High-Clarity 2D Stable Screenshot Canvas */}
             <div className="w-full rounded-xl overflow-hidden bg-[#020611] border border-white/15 relative shadow-xl">
               <img
-                src={activeDetailImage || proj.heroImage}
+                key={currentImageSrc}
+                src={currentImageSrc}
                 alt={proj.title}
-                className="block w-full h-auto"
+                className="block w-full h-auto transition-opacity duration-200 ease-in-out"
                 style={{
                   display: "block",
                   width: "100%",
@@ -246,18 +257,21 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
               />
             </div>
 
-            {/* Compact Thumbnail Dock (Sitting immediately below the main screenshot) */}
-            <div className="flex items-center justify-center gap-2 pt-0.5">
+            {/* Compact Thumbnail Dock (Synchronized with automatic slider & manual clicks) */}
+            <div className="flex items-center justify-center gap-2 pt-0.5" role="tablist" aria-label="Project screenshots">
               {proj.detailImages.map((imgSrc, dIdx) => (
                 <button
                   key={dIdx}
                   type="button"
+                  role="tab"
+                  aria-selected={activeImageIndex === dIdx}
+                  aria-label={`Screenshot ${dIdx + 1} of ${proj.detailImages.length}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onSelectDetailImage(imgSrc);
+                    onSelectImageIndex(dIdx);
                   }}
                   className={`w-12 sm:w-14 h-7 sm:h-8 rounded-md overflow-hidden border transition-all cursor-pointer ${
-                    (activeDetailImage || proj.heroImage) === imgSrc
+                    activeImageIndex === dIdx
                       ? "border-cyan-400 scale-105 shadow-[0_0_10px_rgba(56,189,248,0.6)]"
                       : "border-white/20 opacity-60 hover:opacity-100"
                   }`}
@@ -371,9 +385,31 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
   const { mouse, motionProgress } = useContext(MotionCtx);
   const [triggered, setTriggered] = useState(false);
   const [activeProject, setActiveProject] = useState(0);
-  const [activeDetailImage, setActiveDetailImage] = useState<string>("");
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMediaHovered, setIsMediaHovered] = useState(false);
+
+  // Reset screenshot index to 0 when active project changes
+  useEffect(() => {
+    setActiveImageIndex(0);
+  }, [activeProject]);
+
+  // Automatic Screenshot Slider (4000ms interval, pause on media hover or reduced motion)
+  useEffect(() => {
+    if (!visible || isMediaHovered) return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    const totalImages = projects[activeProject]?.detailImages.length || 1;
+    if (totalImages <= 1) return;
+
+    const timer = setInterval(() => {
+      setActiveImageIndex((prev) => (prev + 1) % totalImages);
+    }, SCREENSHOT_SLIDE_INTERVAL);
+
+    return () => clearInterval(timer);
+  }, [visible, activeProject, isMediaHovered]);
 
   // Local scene progress extracted from global motionProgress (Chapter 5 = index 4)
   const cp = useTransform(motionProgress!, (v: number) => clamp(-0.5, 1.5, v - 4));
@@ -403,10 +439,6 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
     }
   });
 
-  // Update active detail image on project change
-  useEffect(() => {
-    setActiveDetailImage(projects[activeProject].heroImage);
-  }, [activeProject]);
 
   const handlePrev = useCallback(() => {
     setActiveProject((prev) => (prev - 1 + projects.length) % projects.length);
@@ -659,9 +691,10 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
               index={idx}
               projectProgress={projectProgress}
               activeProject={activeProject}
-              activeDetailImage={activeDetailImage}
-              onSelectDetailImage={setActiveDetailImage}
+              activeImageIndex={activeImageIndex}
+              onSelectImageIndex={setActiveImageIndex}
               onSelect={setActiveProject}
+              onMediaHover={setIsMediaHovered}
             />
           ))}
         </div>
