@@ -2,7 +2,7 @@ import { useState, useContext, memo } from "react";
 import { motion, useTransform, useMotionValueEvent } from "motion/react";
 import { MotionCtx } from "../../App";
 import { TechnologyChip } from "../TechnologyChip";
-import travelEvidence from "../../../assets/travel2.JPG";
+import travelEvidence from "../../../assets/projects/ai-travel-marketplace/AVT.PNG";
 
 interface Props {
   chapterProgress: number;
@@ -14,34 +14,34 @@ const verifiedFacts = [
   {
     icon: "🚀",
     title: "PRODUCTION",
-    subtitle: "Deployment Status",
-    desc: "Active production deployment",
+    subtitle: "Railway & Vercel",
+    desc: "Live backend on Railway, frontend on Vercel",
     accent: "text-cyan-400",
   },
   {
     icon: "🤖",
     title: "AI / LLM",
-    subtitle: "Recommendation Layer",
-    desc: "Intelligent concierge & itineraries",
+    subtitle: "Gemini · Groq · OpenAI",
+    desc: "AI Concierge & structured trip planner",
     accent: "text-purple-400",
   },
   {
-    icon: "🧩",
-    title: "MICROSERVICES",
-    subtitle: "Distributed Architecture",
-    desc: "Decoupled domain services",
+    icon: "💳",
+    title: "PAYMENT GATEWAYS",
+    subtitle: "MoMo & SePay",
+    desc: "Integrated QR checkout & automated banking",
     accent: "text-sky-400",
   },
   {
     icon: "💻",
     title: "FULL STACK",
-    subtitle: "Java + Spring + React",
-    desc: "Modern reactive frontend & backend",
+    subtitle: "Java 21 + Spring + React",
+    desc: "REST APIs, MySQL, JWT auth & TanStack",
     accent: "text-emerald-400",
   },
 ];
 
-const techStack = ["Java", "Spring Boot", "React", "TypeScript", "OpenAI", "AWS"];
+const techStack = ["Java", "Spring Boot", "React", "TypeScript", "MySQL", "Tailwind CSS", "OpenAI", "Vite"];
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -175,7 +175,7 @@ export const Chapter4 = memo(function Chapter4({ visible }: Props) {
 
           {/* Concise Factual Description */}
           <p className="text-white/70 text-xs sm:text-sm leading-relaxed max-w-lg mb-4 font-light tracking-wide">
-            An AI-powered travel marketplace combining intelligent recommendations, real-time travel workflows, and distributed backend services.
+            An AI-powered travel marketplace combining multi-LLM intelligent recommendations (Gemini & Groq), real-time itinerary planning, MoMo/SePay payment gateways, and scalable Spring Boot backend services.
           </p>
 
           {/* Verified Technology Badges */}

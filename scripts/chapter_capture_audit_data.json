@@ -1,0 +1,80 @@
+[
+  {
+    "chapterIndex": 0,
+    "chapterTitle": "Chapter 1: Intro Hero Scene",
+    "file": "chapter1.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter1.png",
+    "scrollY": 0,
+    "motionProgress": "0.000",
+    "sizeBytes": 493639,
+    "sizeKb": "482.1",
+    "sha256": "f323264dcf25c72d0595d1fa650f528334995369cbec24ebe8bab90e7a912ff5",
+    "domMatch": true,
+    "status": "PASS"
+  },
+  {
+    "chapterIndex": 1,
+    "chapterTitle": "Chapter 2: Journey Milestones",
+    "file": "chapter2.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter2.png",
+    "scrollY": 1118,
+    "motionProgress": "1.124",
+    "sizeBytes": 536157,
+    "sizeKb": "523.6",
+    "sha256": "e25942ca4ab5585273b4c79df77286f80d28ae4e9271fe5c07e604af2b88ba46",
+    "domMatch": true,
+    "status": "PASS"
+  },
+  {
+    "chapterIndex": 2,
+    "chapterTitle": "Chapter 3: Core Skills Showcase",
+    "file": "chapter3.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter3.png",
+    "scrollY": 2284,
+    "motionProgress": "2.350",
+    "sizeBytes": 689192,
+    "sizeKb": "673.0",
+    "sha256": "53ba3c843a348d32e832d100b0a0df5504fa26529772927adecfe6223b0fce9f",
+    "domMatch": true,
+    "status": "PASS"
+  },
+  {
+    "chapterIndex": 3,
+    "chapterTitle": "Chapter 4: Featured Project (AI Travel)",
+    "file": "chapter4.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter4.png",
+    "scrollY": 3256,
+    "motionProgress": "3.350",
+    "sizeBytes": 710398,
+    "sizeKb": "693.7",
+    "sha256": "b31cf95e8e0bca158a224cde0340e8b7a30930c436d34a28a560c0501e19307d",
+    "domMatch": true,
+    "status": "PASS"
+  },
+  {
+    "chapterIndex": 4,
+    "chapterTitle": "Chapter 5: Project Gallery",
+    "file": "chapter5.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter5.png",
+    "scrollY": 4034,
+    "motionProgress": "4.065",
+    "sizeBytes": 692394,
+    "sizeKb": "676.2",
+    "sha256": "115309ff9a24eeb12b0d2c67501fd09429035f4989c67ff6dec7cc7a9722a728",
+    "domMatch": true,
+    "status": "PASS"
+  },
+  {
+    "chapterIndex": 5,
+    "chapterTitle": "Chapter 6: Contact & Connect",
+    "file": "chapter6.png",
+    "filePath": "E:/Github project/Github-profile/docs/screenshots/chapter6.png",
+    "scrollY": 4860,
+    "motionProgress": "4.997",
+    "sizeBytes": 697096,
+    "sizeKb": "680.8",
+    "sha256": "b4b3062c12d65417704061c30ab08a6cea4a0e66a5e6778fc060c20d93d9872b",
+    "domMatch": true,
+    "status": "PASS"
+  }
+]

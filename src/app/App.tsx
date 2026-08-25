@@ -103,12 +103,12 @@ export default function App() {
   });
 
   // Helper to scroll smoothly to a specific Story Stop
-  const scrollToStop = (stopIdx: number) => {
+  const scrollToStop = (stopIdx: number, instant = false) => {
     const safeIdx = Math.max(0, Math.min(STORY_STOPS.length - 1, stopIdx));
     const targetProgress = STORY_STOPS[safeIdx].progress;
-    const totalScrollable = document.body.scrollHeight - window.innerHeight;
+    const totalScrollable = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
     const targetScrollY = (targetProgress / (TOTAL_CHAPTERS - 1)) * totalScrollable;
-    window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+    window.scrollTo({ top: targetScrollY, behavior: instant ? "instant" : "smooth" });
   };
 
   // Helper to find nearest Story Stop index based on current scroll position
@@ -223,16 +223,30 @@ export default function App() {
     };
   }, []);
 
-  const handleNavigate = (i: number) => {
+  const handleNavigate = (i: number, instant = false) => {
     // Find first Story Stop corresponding to target chapter
     const firstStopIdx = STORY_STOPS.findIndex((s) => s.chapter === i);
     if (firstStopIdx !== -1) {
-      scrollToStop(firstStopIdx);
+      scrollToStop(firstStopIdx, instant);
     } else {
-      const targetScrollY = (i / (TOTAL_CHAPTERS - 1)) * (document.body.scrollHeight - window.innerHeight);
-      window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+      const totalScrollable = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+      const targetScrollY = (i / (TOTAL_CHAPTERS - 1)) * totalScrollable;
+      window.scrollTo({ top: targetScrollY, behavior: instant ? 'instant' : 'smooth' });
     }
   };
+
+  useEffect(() => {
+    (window as any).__APP_READY__ = true;
+    (window as any).__NAVIGATE_TO_CHAPTER__ = (idx: number) => handleNavigate(idx, true);
+    (window as any).__ACTIVE_CHAPTER__ = activeChapter;
+    (window as any).__GET_DIAGNOSTICS__ = () => ({
+      activeChapter,
+      scrollY: window.scrollY,
+      motionProgress: motionProgress.get(),
+      rawMotionProgress: rawMotionProgress.get(),
+      totalScrollable: Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight
+    });
+  }, [activeChapter, motionProgress, rawMotionProgress]);
 
   return (
     <ScrollCtx.Provider value={scrollCtxValue}>
