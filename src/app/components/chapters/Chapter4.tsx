@@ -279,17 +279,6 @@ export const Chapter4 = memo(function Chapter4({ visible }: Props) {
         </motion.div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 3. BOTTOM SCROLL CUE */}
-      {/* ========================================================================= */}
-      <div className="relative z-20 flex flex-col items-center justify-center pb-1 pointer-events-none">
-        <span className="text-[9px] font-mono tracking-[0.25em] text-white/40 uppercase">
-          SCROLL TO EXPLORE ORBIT
-        </span>
-        <svg className="w-3.5 h-3.5 text-white/30 mt-0.5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
     </motion.div>
   );
 });

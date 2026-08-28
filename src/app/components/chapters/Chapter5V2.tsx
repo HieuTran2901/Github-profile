@@ -223,10 +223,10 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
         zIndex: isActive ? 30 : 10,
         transformStyle: isActive ? "flat" : "preserve-3d",
       }}
-      className={`absolute rounded-2xl overflow-hidden backdrop-blur-2xl transition-all cursor-pointer select-none ${
+      className={`absolute rounded-2xl overflow-hidden transition-all cursor-pointer select-none ${
         isActive
-          ? "w-[96%] sm:w-[920px] md:w-[1000px] lg:w-[1080px] bg-[#070f1e]/96 border border-cyan-400/50 shadow-[0_20px_80px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] p-4 sm:p-5"
-          : "w-[320px] sm:w-[380px] md:w-[420px] h-[320px] sm:h-[360px] bg-[#050c18]/85 border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)] p-4"
+          ? "w-[96%] sm:w-[920px] md:w-[1000px] lg:w-[1080px] bg-[#070f1e] border border-cyan-400/50 shadow-[0_20px_80px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] p-4 sm:p-5"
+          : "w-[320px] sm:w-[380px] md:w-[420px] h-[320px] sm:h-[360px] bg-[#050c18]/85 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)] p-4"
       }`}
     >
       {isActive ? (
@@ -238,23 +238,43 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
             onMouseEnter={() => onMediaHover(true)}
             onMouseLeave={() => onMediaHover(false)}
           >
-            {/* Primary High-Clarity 2D Stable Screenshot Canvas */}
+            {/* Primary High-Clarity 2D Stable Screenshot Canvas with Smooth Pure Opacity Crossfade */}
             <div className="w-full rounded-xl overflow-hidden bg-[#020611] border border-white/15 relative shadow-xl">
+              {/* Invisible sizing anchor that guarantees natural aspect ratio and zero layout shift */}
               <img
-                key={currentImageSrc}
-                src={currentImageSrc}
-                alt={proj.title}
-                className="block w-full h-auto transition-opacity duration-200 ease-in-out"
-                style={{
-                  display: "block",
-                  width: "100%",
-                  height: "auto",
-                  transform: "none",
-                  filter: "none",
-                  backdropFilter: "none",
-                }}
-                loading="eager"
+                src={proj.heroImage}
+                alt=""
+                className="block w-full h-auto opacity-0 pointer-events-none select-none invisible"
+                aria-hidden="true"
+                style={{ transform: "none", filter: "none" }}
               />
+
+              {/* Seamless 2D Pure Opacity Dissolve Layer (Zero transform scaling on image pixels) */}
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.img
+                  key={`${proj.id}-${activeImageIndex}`}
+                  src={currentImageSrc}
+                  alt={proj.title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                  className="absolute inset-0 block w-full h-full object-contain select-none"
+                  style={{
+                    display: "block",
+                    transform: "none",
+                    filter: "none",
+                    backdropFilter: "none",
+                    backfaceVisibility: "hidden",
+                    WebkitFontSmoothing: "antialiased",
+                    imageRendering: "auto",
+                  }}
+                  loading="eager"
+                />
+              </AnimatePresence>
             </div>
 
             {/* Compact Thumbnail Dock (Synchronized with automatic slider & manual clicks) */}
@@ -390,12 +410,22 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const [isMediaHovered, setIsMediaHovered] = useState(false);
 
+  // Preload all project screenshots in background for instantaneous zero-jank decode
+  useEffect(() => {
+    projects.forEach((proj) => {
+      proj.detailImages.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    });
+  }, []);
+
   // Reset screenshot index to 0 when active project changes
   useEffect(() => {
     setActiveImageIndex(0);
   }, [activeProject]);
 
-  // Automatic Screenshot Slider (4000ms interval, pause on media hover or reduced motion)
+  // Automatic Screenshot Slider (4000ms dwell time, pause on media hover or reduced motion)
   useEffect(() => {
     if (!visible || isMediaHovered) return;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -513,7 +543,6 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
         pointerEvents,
         perspective: "1400px",
         transformStyle: "preserve-3d",
-        willChange: "transform, opacity",
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -756,14 +785,8 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
           </span>
         </div>
 
-        {/* Bottom Right: Drag / Scroll Navigation Hint */}
-        <div className="hidden sm:flex items-center gap-2 text-white/40 text-[9px] font-mono tracking-wider uppercase">
-          <span className="text-xs">🖱️</span>
-          <div className="flex flex-col text-right leading-tight">
-            <span>DRAG TO EXPLORE</span>
-            <span>SCROLL TO NAVIGATE</span>
-          </div>
-        </div>
+        {/* Bottom Right: Spacer for balanced center alignment */}
+        <div className="hidden sm:block w-[140px]" />
       </div>
     </motion.div>
   );
