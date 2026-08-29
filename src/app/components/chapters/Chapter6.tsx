@@ -57,6 +57,10 @@ const socials = [
   },
 ];
 
+function easeOut(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 function clamp(min: number, max: number, val: number) {
   return Math.max(min, Math.min(max, val));
 }
@@ -90,11 +94,23 @@ export const Chapter6 = memo(function Chapter6({ visible }: Props) {
     }
   });
 
-  // Entering animation as user approaches Chapter 6 (motionProgress 4.92 -> 5.00)
-  // When at Chapter 6 (cp >= 0), opacity is 1.0 and translateY is 0px
-  const opacity = useTransform(cp, [-0.08, 0], [0, 1]);
-  const translateY = useTransform(cp, [-0.08, 0], [24, 0]);
-  const scale = useTransform(cp, [-0.08, 0], [0.985, 1]);
+  // Entering animation as user approaches Chapter 6 (motionProgress 4.93 -> 5.00)
+  // Perfectly non-overlapping hand-off from Chapter 5
+  const opacity = useTransform(cp, (v) => {
+    if (v < -0.07) return 0;
+    if (v < 0) return easeOut((v + 0.07) / 0.07);
+    return 1;
+  });
+  const translateY = useTransform(cp, (v) => {
+    if (v < -0.07) return 16;
+    if (v < 0) return (1 - easeOut((v + 0.07) / 0.07)) * 16;
+    return 0;
+  });
+  const scale = useTransform(cp, (v) => {
+    if (v < -0.07) return 0.99;
+    if (v < 0) return 0.99 + easeOut((v + 0.07) / 0.07) * 0.01;
+    return 1;
+  });
   const pointerEvents = useTransform(cp, (v) => (v >= -0.04 ? "auto" : "none"));
 
   // Parallax Tilt MotionValues
