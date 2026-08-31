@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "vercel-build": "git lfs pull && vite build",
     "dev": "vite"
   },
   "dependencies": {
