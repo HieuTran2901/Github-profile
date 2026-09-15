@@ -283,7 +283,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
                 {proj.title}
               </h3>
-              <p className="text-xs text-white/70 line-clamp-3 leading-relaxed mb-3.5 font-light">
+              <p className="text-xs text-white/70 leading-relaxed mb-3.5 font-light">
                 {proj.description}
               </p>
 

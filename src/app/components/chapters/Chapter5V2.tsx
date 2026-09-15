@@ -335,7 +335,7 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
               </h3>
 
               {/* Verified Description */}
-              <p className="text-xs text-white/70 line-clamp-3 leading-relaxed mb-3 font-light">
+              <p className="text-xs text-white/70 leading-relaxed mb-3 font-light">
                 {proj.description}
               </p>
 
