@@ -186,15 +186,20 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    return 140 - Math.abs(rel) * 160;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 140;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 140 - t * 160;
   });
 
   const scale = useTransform(projectProgress, (p) => {
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    const absRel = Math.min(1.5, Math.abs(rel));
-    return 1.0 - absRel * 0.16;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 1.0;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 1.0 - t * 0.15;
   });
 
   const rotateY = useTransform(projectProgress, (p) => {
@@ -208,8 +213,10 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    const absRel = Math.min(1.5, Math.abs(rel));
-    return 1.0 - absRel * 0.50;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 1.0;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 1.0 - t * 0.50;
   });
 
   const isActive = index === activeProject;
@@ -227,177 +234,135 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
         zIndex: isActive ? 30 : 10,
         transformStyle: isActive ? "flat" : "preserve-3d",
       }}
-      className={`absolute rounded-2xl overflow-hidden transition-all cursor-pointer select-none ${
+      className={`absolute rounded-2xl overflow-hidden cursor-pointer select-none transition-colors duration-300 transition-shadow duration-300 w-[95%] sm:w-[860px] md:w-[920px] lg:w-[1000px] xl:w-[1040px] p-4 sm:p-5 ${
         isActive
-          ? "w-[96%] sm:w-[920px] md:w-[1000px] lg:w-[1080px] bg-[#070f1e] border border-cyan-400/50 shadow-[0_20px_80px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] p-4 sm:p-5"
-          : "w-[320px] sm:w-[380px] md:w-[420px] h-[320px] sm:h-[360px] bg-[#050c18]/85 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)] p-4"
+          ? "bg-[#070f1e] border border-cyan-400/50 shadow-[0_20px_80px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)]"
+          : "bg-[#050c18]/90 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
       }`}
     >
-      {isActive ? (
-        /* ================= ACTIVE CENTER HERO CARD ================= */
-        <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-6 items-stretch">
-          {/* Left Media Column (~64% width): Natural screenshot aspect ratio with auto-slider */}
-          <div
-            className="w-full sm:w-[63%] md:w-[65%] flex flex-col gap-2.5"
-            onMouseEnter={() => onMediaHover(true)}
-            onMouseLeave={() => onMediaHover(false)}
-          >
-            {/* Primary High-Clarity 2D Stable Screenshot Canvas with Smooth Pure Opacity Crossfade */}
-            <div className="w-full rounded-xl overflow-hidden bg-[#020611] border border-white/15 relative shadow-xl">
-              {/* Invisible sizing anchor that guarantees natural aspect ratio and zero layout shift */}
-              <img
-                src={proj.heroImage}
-                alt=""
-                className="block w-full h-auto opacity-0 pointer-events-none select-none invisible"
-                aria-hidden="true"
-                style={{ transform: "none", filter: "none" }}
+      <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-6 items-stretch">
+        {/* Left Media Column (~64% width): Stable fixed-height media container with smooth crossfade */}
+        <div
+          className="w-full sm:w-[63%] md:w-[65%] flex flex-col gap-2.5"
+          onMouseEnter={() => onMediaHover(true)}
+          onMouseLeave={() => onMediaHover(false)}
+        >
+          {/* Primary High-Clarity 2D Stable Screenshot Canvas */}
+          <div className="w-full h-[220px] sm:h-[260px] md:h-[285px] lg:h-[310px] rounded-xl overflow-hidden bg-[#020611] border border-white/15 relative shadow-xl flex items-center justify-center">
+            {/* Seamless 2D Pure Opacity Dissolve Layer */}
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.img
+                key={`${proj.id}-${activeImageIndex}`}
+                src={currentImageSrc}
+                alt={proj.title}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                className="absolute inset-0 block w-full h-full object-contain select-none"
+                style={{
+                  display: "block",
+                  transform: "none",
+                  filter: "none",
+                  backdropFilter: "none",
+                  backfaceVisibility: "hidden",
+                  WebkitFontSmoothing: "antialiased",
+                  imageRendering: "auto",
+                }}
+                loading="eager"
               />
-
-              {/* Seamless 2D Pure Opacity Dissolve Layer (Zero transform scaling on image pixels) */}
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.img
-                  key={`${proj.id}-${activeImageIndex}`}
-                  src={currentImageSrc}
-                  alt={proj.title}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 0.45,
-                    ease: [0.25, 0.1, 0.25, 1],
-                  }}
-                  className="absolute inset-0 block w-full h-full object-contain select-none"
-                  style={{
-                    display: "block",
-                    transform: "none",
-                    filter: "none",
-                    backdropFilter: "none",
-                    backfaceVisibility: "hidden",
-                    WebkitFontSmoothing: "antialiased",
-                    imageRendering: "auto",
-                  }}
-                  loading="eager"
-                />
-              </AnimatePresence>
-            </div>
-
-            {/* Compact Thumbnail Dock (Synchronized with automatic slider & manual clicks) */}
-            <div className="flex items-center justify-center gap-2 pt-0.5" role="tablist" aria-label="Project screenshots">
-              {proj.detailImages.map((imgSrc, dIdx) => (
-                <button
-                  key={dIdx}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeImageIndex === dIdx}
-                  aria-label={`Screenshot ${dIdx + 1} of ${proj.detailImages.length}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelectImageIndex(dIdx);
-                  }}
-                  className={`w-12 sm:w-14 h-7 sm:h-8 rounded-md overflow-hidden border transition-all cursor-pointer ${
-                    activeImageIndex === dIdx
-                      ? "border-cyan-400 scale-105 shadow-[0_0_10px_rgba(56,189,248,0.6)]"
-                      : "border-white/20 opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <img
-                    src={imgSrc}
-                    alt=""
-                    className="block w-full h-full object-cover"
-                    style={{ transform: "none", filter: "none" }}
-                  />
-                </button>
-              ))}
-            </div>
+            </AnimatePresence>
           </div>
 
-          {/* Right Summary Info Column (~36% width) */}
-          <div className="w-full sm:w-[37%] md:w-[35%] flex flex-col justify-between text-left py-0.5 pl-1 sm:pl-2">
-            <div>
-              {/* Header Row: Number + Date + ACTIVE Badge */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold font-mono text-cyan-400 tracking-tight leading-none">
-                    {proj.numberStr}
-                  </span>
-                  <span className="text-[11px] font-mono text-white/50 tracking-wider">
-                    {proj.date}
-                  </span>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[9px] font-mono font-bold tracking-widest uppercase shadow-[0_0_10px_rgba(56,189,248,0.25)]">
-                  ACTIVE
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1.5 leading-tight tracking-tight">
-                {proj.title}
-              </h3>
-
-              {/* Verified Description */}
-              <p className="text-xs text-white/70 leading-relaxed mb-3 font-light">
-                {proj.description}
-              </p>
-
-              {/* Verified Technologies Row */}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {proj.technologies.map((t) => (
-                  <TechnologyChip key={t} name={t} size="sm" />
-                ))}
-              </div>
-
-              {/* Verified Role Badge */}
-              <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
-                <span>👤</span>
-                <span>{proj.role}</span>
-              </div>
-            </div>
-
-            {/* Bottom Action Link */}
-            <div className="pt-2 border-t border-white/10 flex justify-end">
-              <span className="text-xs font-mono text-cyan-400 font-bold hover:text-cyan-300 flex items-center gap-1.5 transition-colors">
-                View Details <span className="text-sm">➔</span>
-              </span>
-            </div>
+          {/* Compact Thumbnail Dock */}
+          <div className="flex items-center justify-center gap-2 pt-0.5" role="tablist" aria-label="Project screenshots">
+            {proj.detailImages.map((imgSrc, dIdx) => (
+              <button
+                key={dIdx}
+                type="button"
+                role="tab"
+                aria-selected={activeImageIndex === dIdx}
+                aria-label={`Screenshot ${dIdx + 1} of ${proj.detailImages.length}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectImageIndex(dIdx);
+                }}
+                className={`w-12 sm:w-14 h-7 sm:h-8 rounded-md overflow-hidden border transition-all cursor-pointer ${
+                  activeImageIndex === dIdx
+                    ? "border-cyan-400 scale-105 shadow-[0_0_10px_rgba(56,189,248,0.6)]"
+                    : "border-white/20 opacity-60 hover:opacity-100"
+                }`}
+              >
+                <img
+                  src={imgSrc}
+                  alt=""
+                  className="block w-full h-full object-cover"
+                  style={{ transform: "none", filter: "none" }}
+                />
+              </button>
+            ))}
           </div>
         </div>
-      ) : (
-        /* ================= SIDE PEEK CARD ================= */
-        <div className="flex w-full h-full p-2 gap-3.5 text-left">
-          {/* Left Screenshot Thumbnail */}
-          <div className="w-[45%] h-full rounded-xl overflow-hidden bg-slate-900/90 border border-white/10 flex items-center justify-center p-1 relative">
-            <img
-              src={proj.heroImage}
-              alt=""
-              className="w-full h-full object-cover rounded-lg opacity-85"
-            />
-          </div>
 
-          {/* Right Info */}
-          <div className="w-[55%] flex flex-col justify-between py-1">
-            <div>
-              <div className="flex items-baseline gap-2 mb-1.5">
-                <span className="text-2xl font-extrabold font-mono text-cyan-300">
+        {/* Right Summary Info Column (~36% width) */}
+        <div className="w-full sm:w-[37%] md:w-[35%] flex flex-col justify-between text-left py-0.5 pl-1 sm:pl-2">
+          <div>
+            {/* Header Row: Number + Date + Status Badge */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-extrabold font-mono text-cyan-400 tracking-tight leading-none">
                   {proj.numberStr}
                 </span>
-                <span className="text-[10px] font-mono text-white/40">
+                <span className="text-[11px] font-mono text-white/50 tracking-wider">
                   {proj.date}
                 </span>
               </div>
-              <h4 className="text-sm sm:text-base font-bold text-white truncate mb-1">
-                {proj.title}
-              </h4>
-              <p className="text-[11px] text-white/55 line-clamp-3 leading-snug">
-                {proj.description}
-              </p>
+              <span
+                className={`px-2.5 py-0.5 rounded-full border text-[9px] font-mono font-bold tracking-widest uppercase ${
+                  isActive
+                    ? "bg-cyan-500/15 border-cyan-400/30 text-cyan-300 shadow-[0_0_10px_rgba(56,189,248,0.25)]"
+                    : "bg-white/5 border-white/15 text-white/50"
+                }`}
+              >
+                {isActive ? "ACTIVE" : "STANDBY"}
+              </span>
             </div>
 
-            <span className="text-[11px] font-mono text-cyan-400 font-semibold flex items-center gap-1">
-              View Details ➔
+            {/* Title */}
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1.5 leading-tight tracking-tight">
+              {proj.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-xs text-white/70 leading-relaxed mb-3 font-light">
+              {proj.description}
+            </p>
+
+            {/* Technologies Row */}
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {proj.technologies.map((t) => (
+                <TechnologyChip key={t} name={t} size="sm" />
+              ))}
+            </div>
+
+            {/* Role Badge */}
+            <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
+              <span>👤</span>
+              <span>{proj.role}</span>
+            </div>
+          </div>
+
+          {/* Bottom Action Link */}
+          <div className="pt-2 border-t border-white/10 flex justify-end">
+            <span className="text-xs font-mono text-cyan-400 font-bold hover:text-cyan-300 flex items-center gap-1.5 transition-colors">
+              View Details <span className="text-sm">➔</span>
             </span>
           </div>
         </div>
-      )}
+      </div>
     </motion.div>
   );
 });
@@ -474,13 +439,26 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
   });
 
 
-  const handlePrev = useCallback(() => {
-    setActiveProject((prev) => (prev - 1 + projects.length) % projects.length);
+  const navigateToProject = useCallback((projectIdx: number) => {
+    const safeIdx = clamp(0, projects.length - 1, projectIdx);
+    setActiveProject(safeIdx);
+    const targetProgress = 4.15 + safeIdx * 0.35;
+    const totalScrollable = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+    if (totalScrollable > 0) {
+      const targetScrollY = (targetProgress / 5) * totalScrollable;
+      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+    }
   }, []);
 
+  const handlePrev = useCallback(() => {
+    const prevIdx = (activeProject - 1 + projects.length) % projects.length;
+    navigateToProject(prevIdx);
+  }, [activeProject, navigateToProject]);
+
   const handleNext = useCallback(() => {
-    setActiveProject((prev) => (prev + 1) % projects.length);
-  }, []);
+    const nextIdx = (activeProject + 1) % projects.length;
+    navigateToProject(nextIdx);
+  }, [activeProject, navigateToProject]);
 
   // Autonomous Orbit Rotation timer
   useEffect(() => {
@@ -489,11 +467,15 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
     if (prefersReducedMotion) return;
 
     const interval = setInterval(() => {
-      setActiveProject((prev) => (prev + 1) % projects.length);
+      setActiveProject((current) => {
+        const next = (current + 1) % projects.length;
+        navigateToProject(next);
+        return next;
+      });
     }, 5500);
 
     return () => clearInterval(interval);
-  }, [visible, isAutoRotating, isHovered]);
+  }, [visible, isAutoRotating, isHovered, navigateToProject]);
 
   // Keyboard navigation listener
   useEffect(() => {
@@ -726,7 +708,7 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
               activeProject={activeProject}
               activeImageIndex={activeImageIndex}
               onSelectImageIndex={setActiveImageIndex}
-              onSelect={setActiveProject}
+              onSelect={navigateToProject}
               onMediaHover={setIsMediaHovered}
             />
           ))}
@@ -766,7 +748,7 @@ export const Chapter5V2 = memo(function Chapter5V2({ visible }: Props) {
             {projects.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setActiveProject(i)}
+                onClick={() => navigateToProject(i)}
                 aria-label={`Go to project ${i + 1}`}
                 className="transition-all duration-300 cursor-pointer"
                 style={{

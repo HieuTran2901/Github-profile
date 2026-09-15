@@ -181,15 +181,20 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    return 130 - Math.abs(rel) * 150;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 130;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 130 - t * 150;
   });
 
   const scale = useTransform(projectProgress, (p) => {
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    const absRel = Math.min(1.5, Math.abs(rel));
-    return 1.0 - absRel * 0.24;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 1.0;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 1.0 - t * 0.15;
   });
 
   const rotateY = useTransform(projectProgress, (p) => {
@@ -203,8 +208,10 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
     let rel = index - p;
     while (rel < -1.5) rel += 3;
     while (rel > 1.5) rel -= 3;
-    const absRel = Math.min(1.5, Math.abs(rel));
-    return 1.0 - absRel * 0.32;
+    const absRel = Math.abs(rel);
+    if (absRel <= 0.15) return 1.0;
+    const t = Math.min(1, (absRel - 0.15) / 0.85);
+    return 1.0 - t * 0.40;
   });
 
   const isActive = index === activeProject;
@@ -218,134 +225,102 @@ const OrbitProjectCard = memo(function OrbitProjectCard({
         scale,
         rotateY,
         opacity,
+        zIndex: isActive ? 20 : 10,
         transformStyle: "preserve-3d",
       }}
-      className={`absolute rounded-2xl overflow-hidden backdrop-blur-2xl transition-all cursor-pointer select-none ${
+      className={`absolute rounded-2xl overflow-hidden backdrop-blur-2xl cursor-pointer select-none transition-colors duration-300 transition-shadow duration-300 w-[94%] sm:w-[740px] md:w-[780px] h-[340px] sm:h-[370px] ${
         isActive
-          ? "w-[94%] sm:w-[740px] md:w-[780px] h-[330px] sm:h-[360px] bg-[#070f1e]/90 border border-cyan-400/50 shadow-[0_20px_70px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] z-20"
-          : "w-[78%] sm:w-[500px] h-[270px] sm:h-[300px] bg-[#050c18]/80 border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)] z-10"
+          ? "bg-[#070f1e]/90 border border-cyan-400/50 shadow-[0_20px_70px_rgba(0,180,255,0.25),inset_0_1px_0_rgba(255,255,255,0.15)]"
+          : "bg-[#050c18]/80 border border-white/15 hover:border-cyan-400/40 shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
       }`}
     >
-      {isActive ? (
-        /* ================= ACTIVE CENTER CARD ================= */
-        <div className="flex flex-col sm:flex-row w-full h-full">
-          {/* Left Screenshot Stage (~55%) */}
-          <div className="w-full sm:w-[56%] h-48 sm:h-full bg-slate-950/80 relative flex flex-col justify-between p-3.5 border-b sm:border-b-0 sm:border-r border-white/10">
-            {/* Main Screenshot Canvas */}
-            <div className="w-full flex-1 rounded-xl overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center p-1 relative group">
-              <img
-                src={activeDetailImage || proj.heroImage}
-                alt={proj.title}
-                className="w-full h-full object-contain rounded-lg transition-all duration-300"
-              />
-            </div>
-
-            {/* Sub-Thumbnails Dock */}
-            <div className="flex items-center justify-center gap-2 pt-2">
-              {proj.detailImages.map((imgSrc, dIdx) => (
-                <button
-                  key={dIdx}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSelectDetailImage(imgSrc);
-                  }}
-                  className={`w-11 h-7 rounded-md overflow-hidden border transition-all cursor-pointer ${
-                    activeDetailImage === imgSrc
-                      ? "border-cyan-400 scale-105 shadow-[0_0_8px_rgba(56,189,248,0.5)]"
-                      : "border-white/20 opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <img src={imgSrc} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Summary Info Stage (~44%) */}
-          <div className="w-full sm:w-[44%] p-5 sm:p-6 flex flex-col justify-between text-left">
-            <div>
-              {/* Header Row: Number + Date + ACTIVE Badge */}
-              <div className="flex items-center justify-between mb-2.5">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-extrabold font-mono text-cyan-400 tracking-tight leading-none">
-                    {proj.numberStr}
-                  </span>
-                  <span className="text-[11px] font-mono text-white/50 tracking-wider">
-                    {proj.date}
-                  </span>
-                </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[9px] font-mono font-bold tracking-widest uppercase shadow-[0_0_10px_rgba(56,189,248,0.25)]">
-                  ACTIVE
-                </span>
-              </div>
-
-              {/* Title & Short Verified Description */}
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
-                {proj.title}
-              </h3>
-              <p className="text-xs text-white/70 leading-relaxed mb-3.5 font-light">
-                {proj.description}
-              </p>
-
-              {/* Verified Technologies Row */}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {proj.technologies.map((t) => (
-                  <TechnologyChip key={t} name={t} size="sm" />
-                ))}
-              </div>
-
-              {/* Verified Role Badge */}
-              <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
-                <span>👤</span>
-                <span>{proj.role}</span>
-              </div>
-            </div>
-
-            {/* Bottom Link */}
-            <div className="pt-3 border-t border-white/10 flex justify-end">
-              <span className="text-xs font-mono text-cyan-400 font-bold hover:text-cyan-300 flex items-center gap-1.5 transition-colors">
-                View Details <span className="text-sm">➔</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* ================= SIDE PEEK CARD ================= */
-        <div className="flex w-full h-full p-4 gap-3.5 text-left">
-          {/* Left Screenshot Thumbnail */}
-          <div className="w-[45%] h-full rounded-xl overflow-hidden bg-slate-900/90 border border-white/10 flex items-center justify-center p-1 relative">
+      <div className="flex flex-col sm:flex-row w-full h-full">
+        {/* Left Screenshot Stage (~55%) */}
+        <div className="w-full sm:w-[56%] h-44 sm:h-full bg-slate-950/80 relative flex flex-col justify-between p-3 border-b sm:border-b-0 sm:border-r border-white/10">
+          {/* Main Screenshot Canvas */}
+          <div className="w-full flex-1 rounded-xl overflow-hidden bg-black/40 border border-white/10 flex items-center justify-center p-1 relative group">
             <img
-              src={proj.heroImage}
-              alt=""
-              className="w-full h-full object-cover rounded-lg opacity-85"
+              src={activeDetailImage || proj.heroImage}
+              alt={proj.title}
+              className="w-full h-full object-contain rounded-lg transition-all duration-300"
             />
           </div>
 
-          {/* Right Info */}
-          <div className="w-[55%] flex flex-col justify-between py-1">
-            <div>
-              <div className="flex items-baseline gap-2 mb-1.5">
-                <span className="text-2xl font-extrabold font-mono text-cyan-300">
+          {/* Sub-Thumbnails Dock */}
+          <div className="flex items-center justify-center gap-2 pt-2">
+            {proj.detailImages.map((imgSrc, dIdx) => (
+              <button
+                key={dIdx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectDetailImage(imgSrc);
+                }}
+                className={`w-11 h-7 rounded-md overflow-hidden border transition-all cursor-pointer ${
+                  activeDetailImage === imgSrc
+                    ? "border-cyan-400 scale-105 shadow-[0_0_8px_rgba(56,189,248,0.5)]"
+                    : "border-white/20 opacity-60 hover:opacity-100"
+                }`}
+              >
+                <img src={imgSrc} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Summary Info Stage (~44%) */}
+        <div className="w-full sm:w-[44%] p-4 sm:p-5 flex flex-col justify-between text-left">
+          <div>
+            {/* Header Row: Number + Date + Status Badge */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-extrabold font-mono text-cyan-400 tracking-tight leading-none">
                   {proj.numberStr}
                 </span>
-                <span className="text-[10px] font-mono text-white/40">
+                <span className="text-[11px] font-mono text-white/50 tracking-wider">
                   {proj.date}
                 </span>
               </div>
-              <h4 className="text-sm sm:text-base font-bold text-white truncate mb-1">
-                {proj.title}
-              </h4>
-              <p className="text-[11px] text-white/55 line-clamp-3 leading-snug">
-                {proj.description}
-              </p>
+              <span
+                className={`px-2.5 py-0.5 rounded-full border text-[9px] font-mono font-bold tracking-widest uppercase ${
+                  isActive
+                    ? "bg-cyan-500/15 border-cyan-400/30 text-cyan-300 shadow-[0_0_10px_rgba(56,189,248,0.25)]"
+                    : "bg-white/5 border-white/15 text-white/50"
+                }`}
+              >
+                {isActive ? "ACTIVE" : "STANDBY"}
+              </span>
             </div>
 
-            <span className="text-[11px] font-mono text-cyan-400 font-semibold flex items-center gap-1">
-              View Details ➔
+            {/* Title & Short Description */}
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1.5 leading-tight tracking-tight">
+              {proj.title}
+            </h3>
+            <p className="text-xs text-white/70 leading-relaxed mb-3 font-light line-clamp-3">
+              {proj.description}
+            </p>
+
+            {/* Technologies Row */}
+            <div className="flex flex-wrap gap-1.5 mb-2.5">
+              {proj.technologies.slice(0, 5).map((t) => (
+                <TechnologyChip key={t} name={t} size="sm" />
+              ))}
+            </div>
+
+            {/* Role Badge */}
+            <div className="flex items-center gap-1.5 text-xs text-cyan-300/85 font-mono tracking-wider">
+              <span>👤</span>
+              <span>{proj.role}</span>
+            </div>
+          </div>
+
+          {/* Bottom Link */}
+          <div className="pt-2 border-t border-white/10 flex justify-end">
+            <span className="text-xs font-mono text-cyan-400 font-bold hover:text-cyan-300 flex items-center gap-1.5 transition-colors">
+              View Details <span className="text-sm">➔</span>
             </span>
           </div>
         </div>
-      )}
+      </div>
     </motion.div>
   );
 });
@@ -394,13 +369,26 @@ export const Chapter5Fallback = memo(function Chapter5Fallback({ visible }: Prop
     setActiveDetailImage(projects[activeProject].heroImage);
   }, [activeProject]);
 
-  const handlePrev = useCallback(() => {
-    setActiveProject((prev) => (prev - 1 + projects.length) % projects.length);
+  const navigateToProject = useCallback((projectIdx: number) => {
+    const safeIdx = clamp(0, projects.length - 1, projectIdx);
+    setActiveProject(safeIdx);
+    const targetProgress = 4.15 + safeIdx * 0.35;
+    const totalScrollable = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+    if (totalScrollable > 0) {
+      const targetScrollY = (targetProgress / 5) * totalScrollable;
+      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
+    }
   }, []);
 
+  const handlePrev = useCallback(() => {
+    const prevIdx = (activeProject - 1 + projects.length) % projects.length;
+    navigateToProject(prevIdx);
+  }, [activeProject, navigateToProject]);
+
   const handleNext = useCallback(() => {
-    setActiveProject((prev) => (prev + 1) % projects.length);
-  }, []);
+    const nextIdx = (activeProject + 1) % projects.length;
+    navigateToProject(nextIdx);
+  }, [activeProject, navigateToProject]);
 
   // Autonomous Orbit Rotation timer
   useEffect(() => {
@@ -409,11 +397,15 @@ export const Chapter5Fallback = memo(function Chapter5Fallback({ visible }: Prop
     if (prefersReducedMotion) return;
 
     const interval = setInterval(() => {
-      setActiveProject((prev) => (prev + 1) % projects.length);
+      setActiveProject((current) => {
+        const next = (current + 1) % projects.length;
+        navigateToProject(next);
+        return next;
+      });
     }, 5500);
 
     return () => clearInterval(interval);
-  }, [visible, isAutoRotating, isHovered]);
+  }, [visible, isAutoRotating, isHovered, navigateToProject]);
 
   // Keyboard navigation listener
   useEffect(() => {
@@ -647,7 +639,7 @@ export const Chapter5Fallback = memo(function Chapter5Fallback({ visible }: Prop
               activeProject={activeProject}
               activeDetailImage={activeDetailImage}
               onSelectDetailImage={setActiveDetailImage}
-              onSelect={setActiveProject}
+              onSelect={navigateToProject}
             />
           ))}
         </div>
@@ -686,7 +678,7 @@ export const Chapter5Fallback = memo(function Chapter5Fallback({ visible }: Prop
             {projects.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setActiveProject(i)}
+                onClick={() => navigateToProject(i)}
                 aria-label={`Go to project ${i + 1}`}
                 className="transition-all duration-300 cursor-pointer"
                 style={{
