@@ -59,7 +59,7 @@ const STORY_STOPS: StoryStop[] = [
   // Chapter 5: Project Gallery (BEAT-BASED - 3 Projects)
   { id: "ch5-p1", chapter: 4, progress: 4.15, label: "Gallery / AI Study Planner", type: "BEAT_BASED" },
   { id: "ch5-p2", chapter: 4, progress: 4.50, label: "Gallery / AI Travel Marketplace", type: "BEAT_BASED" },
-  { id: "ch5-p3", chapter: 4, progress: 4.85, label: "Gallery / Developer Control Center", type: "BEAT_BASED" },
+  { id: "ch5-p3", chapter: 4, progress: 4.85, label: "Gallery / Phở Gia Truyền 1986", type: "BEAT_BASED" },
 
   // Chapter 6: Contact (SCENE-BASED - Closing Scene)
   { id: "ch6", chapter: 5, progress: 5.00, label: "Contact & Connect", type: "SCENE_BASED" },

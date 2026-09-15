@@ -14,9 +14,10 @@ import avt1 from "../../../assets/projects/ai-travel-marketplace/AVT1.PNG";
 import avt2 from "../../../assets/projects/ai-travel-marketplace/AVT2.PNG";
 import avt3 from "../../../assets/projects/ai-travel-marketplace/AVT3.PNG";
 
-import dcc1 from "../../../assets/projects/developer-control-center/DCC1.PNG";
-import dcc2 from "../../../assets/projects/developer-control-center/DCC2.PNG";
-import dcc3 from "../../../assets/projects/developer-control-center/DCC3.PNG";
+import pho1 from "../../../assets/projects/pho-viet-1986/PHO1.PNG";
+import pho2 from "../../../assets/projects/pho-viet-1986/PHO2.PNG";
+import pho3 from "../../../assets/projects/pho-viet-1986/PHO3.PNG";
+import pho4 from "../../../assets/projects/pho-viet-1986/PHO4.PNG";
 
 interface Props {
   chapterProgress: number;
@@ -109,33 +110,35 @@ const projects: StoryProject[] = [
     accentGlow: "rgba(0, 210, 255, 0.4)",
   },
   {
-    id: "dcc",
+    id: "pho1986",
     index: 2,
     numberStr: "03",
-    date: "07.08.2026",
+    date: "13.09.2026",
     year: "2026",
-    title: "Developer Control Center",
-    titleAccent: "Center",
-    subtitle: "Desktop Developer Tooling & Diagnostics",
-    category: "Desktop Tooling · Systems",
+    title: "Phở Gia Truyền 1986",
+    titleAccent: "1986",
+    subtitle: "Heritage Culinary & Smart Booking Platform",
+    category: "Full Stack · AI Concierge",
     status: "PRODUCTION",
-    systemIdentity: "AI-ASSISTED DEVELOPER TOOLING",
-    systemCharacteristics: ["DESKTOP TOOLING", "SYSTEM MANAGEMENT", "AI-ASSISTED WORKSPACE"],
+    systemIdentity: "HERITAGE CULINARY ECOSYSTEM",
+    systemCharacteristics: ["VIETQR / SEPAY AUTOMATION", "GEMINI AI CONCIERGE", "SPRING BOOT & REACT"],
     description:
-      "Desktop developer control center for managing processes, terminals, workspaces, diagnostics, and development workflows.",
-    role: "Full-Stack Systems Engineer",
+      "Enterprise culinary heritage marketplace featuring personalized taste customization, 3-step table reservations, zero-trust Napas 247/SePay QR auto-verification, Gemini AI assistant, and admin CRM portal.",
+    role: "Full-Stack Engineer",
     technologies: [
-      "Tauri",
-      "Rust",
+      "Java",
+      "Spring Boot",
       "React",
-      "TypeScript",
       "Tailwind CSS",
-      "IPC",
+      "MySQL",
+      "SePay / MoMo",
+      "OpenAI",
+      "Vite",
     ],
-    heroImage: dcc1,
-    detailImages: [dcc1, dcc2, dcc3],
-    accent: "#10b981",
-    accentGlow: "rgba(16, 185, 129, 0.4)",
+    heroImage: pho1,
+    detailImages: [pho1, pho2, pho3, pho4],
+    accent: "#f59e0b",
+    accentGlow: "rgba(245, 158, 11, 0.4)",
   },
 ];
 
