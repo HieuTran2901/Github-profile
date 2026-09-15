@@ -14,10 +14,11 @@ import avt1 from "../../../assets/projects/ai-travel-marketplace/AVT1.PNG";
 import avt2 from "../../../assets/projects/ai-travel-marketplace/AVT2.PNG";
 import avt3 from "../../../assets/projects/ai-travel-marketplace/AVT3.PNG";
 
-import pho1 from "../../../assets/projects/pho-viet-1986/PHO1.PNG";
-import pho2 from "../../../assets/projects/pho-viet-1986/PHO2.PNG";
-import pho3 from "../../../assets/projects/pho-viet-1986/PHO3.PNG";
-import pho4 from "../../../assets/projects/pho-viet-1986/PHO4.PNG";
+import phoHero from "../../../assets/projects/pho-viet-1986/hero-showcase.png";
+import phoAdmin from "../../../assets/projects/pho-viet-1986/admin-diorama.png";
+import phoSeatmap from "../../../assets/projects/pho-viet-1986/seatmap-modal.png";
+import phoCart from "../../../assets/projects/pho-viet-1986/cart-drawer.png";
+import phoLoyalty from "../../../assets/projects/pho-viet-1986/loyalty-cards.png";
 
 interface Props {
   chapterProgress: number;
@@ -135,8 +136,8 @@ const projects: StoryProject[] = [
       "OpenAI",
       "Vite",
     ],
-    heroImage: pho1,
-    detailImages: [pho1, pho2, pho3, pho4],
+    heroImage: phoHero,
+    detailImages: [phoHero, phoAdmin, phoSeatmap, phoCart, phoLoyalty],
     accent: "#f59e0b",
     accentGlow: "rgba(245, 158, 11, 0.4)",
   },
